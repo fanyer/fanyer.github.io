@@ -3,20 +3,53 @@
 <head>
   <meta charset="utf-8">
   
-  <title>1st | fanyer的blog | null</title>
+  <title>js里的三种继承 | fanyer的blog | null</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="">
-  <meta name="description">
+  <meta name="description" content="js里的三种继承@(示例笔记本)[马克飞象|帮助|Markdown]
+//拷贝继承
+
+/////////////////////////////////////////////////////////
+
+//类式继承(用new的继承)
+
+function Aaa() {        //父类
+    this.name=&amp;apos;小明&amp;apos;;
+}
+
+Aaa..prototype.show">
 <meta property="og:type" content="article">
-<meta property="og:title" content="1st">
-<meta property="og:url" content="http://yoursite.com/2016/04/19/1st/index.html">
+<meta property="og:title" content="js里的三种继承">
+<meta property="og:url" content="http://yoursite.com/2016/04/20/js里的三种继承/index.html">
 <meta property="og:site_name" content="fanyer的blog">
-<meta property="og:description">
-<meta property="og:updated_time" content="2016-04-18T20:17:20.000Z">
+<meta property="og:description" content="js里的三种继承@(示例笔记本)[马克飞象|帮助|Markdown]
+//拷贝继承
+
+/////////////////////////////////////////////////////////
+
+//类式继承(用new的继承)
+
+function Aaa() {        //父类
+    this.name=&amp;apos;小明&amp;apos;;
+}
+
+Aaa..prototype.show">
+<meta property="og:updated_time" content="2016-04-19T17:25:38.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="1st">
-<meta name="twitter:description">
+<meta name="twitter:title" content="js里的三种继承">
+<meta name="twitter:description" content="js里的三种继承@(示例笔记本)[马克飞象|帮助|Markdown]
+//拷贝继承
+
+/////////////////////////////////////////////////////////
+
+//类式继承(用new的继承)
+
+function Aaa() {        //父类
+    this.name=&amp;apos;小明&amp;apos;;
+}
+
+Aaa..prototype.show">
   
     <link rel="alternative" href="/atom.xml" title="fanyer的blog" type="application/atom+xml">
   
@@ -35,7 +68,7 @@
   </a>
   <div class="brand-wrap">
     <div class="brand">
-      <a href="/" class="avatar"><img src="/img/logo.jpg"></a>
+      <a href="/" class="avatar"><img src="/img/me.jpg"></a>
       <hgroup class="introduce">
         <h5 class="nickname">fanyer</h5>
         <a href="mailto:undefined" title="fanyer101@163.com" class="mail">fanyer101@163.com</a>
@@ -98,7 +131,7 @@
         <a href="javascript:;" class="header-icon waves-circle-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">1st</div>
+        <div class="flex-col header-title ellipsis">js里的三种继承</div>
         
         <a href="javascript:;" class="header-icon waves-circle-light" id="menu-share">
             <i class="icon icon-lg icon-share-alt"></i>
@@ -108,14 +141,14 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">1st</h1>
-    <h5 class="subtitle">2016-04-19</h5>
+    <h1 class="author">js里的三种继承</h1>
+    <h5 class="subtitle">2016-04-20</h5>
   </div>
 </header>
 
     <div class="container body-wrap">
       
-  <article id="post-1st" class="article article-type-post" itemprop="blogPost">
+  <article id="post-js里的三种继承" class="article article-type-post" itemprop="blogPost">
     
       <div class="post-meat flex-row">
         <div class="flex-col"></div>
@@ -165,42 +198,76 @@
 
           
           <nav class="post-toc-wrap" id="post-toc">
-            
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#js里的三种继承"><span class="post-toc-text">js里的三种继承</span></a></li></ol>
           </nav>
           
         </aside>
 
         <div class="post-main">
 
-            <div class="post-content" id="post-content" itemprop="postContent"></div>
+            <div class="post-content" id="post-content" itemprop="postContent"><h1 id="js里的三种继承"><a href="#js里的三种继承" class="headerlink" title="js里的三种继承"></a>js里的三种继承</h1><p>@(示例笔记本)[马克飞象|帮助|Markdown]</p>
+<pre><code>//拷贝继承
+
+/////////////////////////////////////////////////////////
+
+//类式继承(用new的继承)
+
+function Aaa() {        //父类
+    this.name=&apos;小明&apos;;
+}
+
+Aaa..prototype.showName = function(first_argument) {
+    alert(this.name);
+};
+
+function Bbb() {        //子类
+    Aaa.call(this);        //继承父类构造函数里的属性
+}
+
+Bbb.prototype = new Aaa();    //实现继承Core
+
+//这里继承把属性也继承了，所以这种继承只适合单例模式
+//为了解决这个问题，需要一个中间项
+
+
+//最终的类式继承
+var f = function () {};            //方法继承
+f.prototype = Aaa.prototype;
+
+Bbb.prototype=new f();
+Bbb.prototype.constructer=Bbb;    //修改this指向
+
+
+
+///////////////////////////////////////////////////////////////////////
+
+
+
+
+//原型继承(不需要用new)
+
+var    a={name:&apos;小明&apos;}；
+
+var b= clone(a);
+
+alert(b.name);
+
+function clone(obj) {
+    var F=function () {};
+    F.prototype=obj;
+
+    return new F();
+}
+</code></pre><hr>
+</div>
 
             
-<nav class="post-nav flex-row">
-  <div class="flex-col waves-block prev">
-    
-      <a href="/2016/04/19/4th/" title="4th" id="post-prev" class="post-nav-link">
-        <i class="icon icon-chevron-left"></i>
-        <span class="article-nav-title">上一篇</span>
-      </a>
-    
-  </div>
-  <div class="flex-col waves-block next">
-    
-      <a href="/2016/04/19/site/" title="site" id="post-next" class="post-nav-link">
-        <span class="article-nav-title">下一篇</span>
-        <i class="icon icon-chevron-right"></i>
-      </a>
-    
-  </div>
-
-</nav>
-
 
 
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="1st" data-title="1st" data-url="http://yoursite.com/2016/04/19/1st/index.html"></div>
+	<div class="ds-thread" data-thread-key="js里的三种继承" data-title="js里的三种继承" data-url="http://yoursite.com/2016/04/20/js里的三种继承/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -239,10 +306,10 @@
 
 <script>
 var BLOG_SHARE = {
-    title: "1st",
-    pic: "/img/logo.jpg",
+    title: "js里的三种继承",
+    pic: "/img/me.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://yoursite.com/2016/04/19/1st/index.html"
+    url: "http://yoursite.com/2016/04/20/js里的三种继承/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
