@@ -3,53 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>js里的三种继承 | fanyer的blog | null</title>
+  <title>echarts扩展之prepareBoxData详解 | fanyer的blog | null</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="">
-  <meta name="description" content="js里的三种继承@(示例笔记本)[马克飞象|帮助|Markdown]
-//拷贝继承
+  <meta name="description" content="echarts扩展之prepareBoxData详解@(echarts)[箱线图|预处理|Markdown]
 
-/////////////////////////////////////////////////////////
-
-//类式继承(用new的继承)
-
-function Aaa() {        //父类
-    this.name=&amp;apos;小明&amp;apos;;
-}
-
-Aaa..prototype.show">
+   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot和i官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepare">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js里的三种继承">
-<meta property="og:url" content="http://yoursite.com/2016/04/20/js里的三种继承/index.html">
+<meta property="og:title" content="echarts扩展之prepareBoxData详解">
+<meta property="og:url" content="http://yoursite.com/2016/04/20/echarts扩展之prepareBoxData详解/index.html">
 <meta property="og:site_name" content="fanyer的blog">
-<meta property="og:description" content="js里的三种继承@(示例笔记本)[马克飞象|帮助|Markdown]
-//拷贝继承
+<meta property="og:description" content="echarts扩展之prepareBoxData详解@(echarts)[箱线图|预处理|Markdown]
 
-/////////////////////////////////////////////////////////
-
-//类式继承(用new的继承)
-
-function Aaa() {        //父类
-    this.name=&amp;apos;小明&amp;apos;;
-}
-
-Aaa..prototype.show">
-<meta property="og:updated_time" content="2016-04-19T17:25:38.000Z">
+   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot和i官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepare">
+<meta property="og:updated_time" content="2016-04-21T15:38:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js里的三种继承">
-<meta name="twitter:description" content="js里的三种继承@(示例笔记本)[马克飞象|帮助|Markdown]
-//拷贝继承
+<meta name="twitter:title" content="echarts扩展之prepareBoxData详解">
+<meta name="twitter:description" content="echarts扩展之prepareBoxData详解@(echarts)[箱线图|预处理|Markdown]
 
-/////////////////////////////////////////////////////////
-
-//类式继承(用new的继承)
-
-function Aaa() {        //父类
-    this.name=&amp;apos;小明&amp;apos;;
-}
-
-Aaa..prototype.show">
+   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot和i官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepare">
   
     <link rel="alternative" href="/atom.xml" title="fanyer的blog" type="application/atom+xml">
   
@@ -131,7 +104,7 @@ Aaa..prototype.show">
         <a href="javascript:;" class="header-icon waves-circle-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">js里的三种继承</div>
+        <div class="flex-col header-title ellipsis">echarts扩展之prepareBoxData详解</div>
         
         <a href="javascript:;" class="header-icon waves-circle-light" id="menu-share">
             <i class="icon icon-lg icon-share-alt"></i>
@@ -141,14 +114,14 @@ Aaa..prototype.show">
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">js里的三种继承</h1>
+    <h1 class="author">echarts扩展之prepareBoxData详解</h1>
     <h5 class="subtitle">2016-04-20</h5>
   </div>
 </header>
 
     <div class="container body-wrap">
       
-  <article id="post-js里的三种继承" class="article article-type-post" itemprop="blogPost">
+  <article id="post-echarts扩展之prepareBoxData详解" class="article article-type-post" itemprop="blogPost">
     
       <div class="post-meat flex-row">
         <div class="flex-col"></div>
@@ -198,80 +171,47 @@ Aaa..prototype.show">
 
           
           <nav class="post-toc-wrap" id="post-toc">
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#js里的三种继承"><span class="post-toc-text">js里的三种继承</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#echarts扩展之prepareBoxData详解"><span class="post-toc-text">echarts扩展之prepareBoxData详解</span></a></li></ol>
           </nav>
           
         </aside>
 
         <div class="post-main">
 
-            <div class="post-content" id="post-content" itemprop="postContent"><h1 id="js里的三种继承"><a href="#js里的三种继承" class="headerlink" title="js里的三种继承"></a>js里的三种继承</h1><p>@(示例笔记本)[马克飞象|帮助|Markdown]</p>
-<pre><code>//拷贝继承
+            <div class="post-content" id="post-content" itemprop="postContent"><h1 id="echarts扩展之prepareBoxData详解"><a href="#echarts扩展之prepareBoxData详解" class="headerlink" title="echarts扩展之prepareBoxData详解"></a>echarts扩展之prepareBoxData详解</h1><p>@(echarts)[箱线图|预处理|Markdown]</p>
+<hr>
+<p>   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot和i官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepareBoxPlot，但是没有文档和特殊说明，有时候会出一些问题/</p>
+<pre><code>/*
+var low = boundIQR === &apos;none&apos;
+    ? ascList[0]
+    : Q1 - (boundIQR == null ? 1.5 : boundIQR) * IQR;
+var high = boundIQR === &apos;none&apos;
+    ? ascList[ascList.length - 1]
+    : Q3 + (boundIQR == null ? 1.5 : boundIQR) * IQR;
+*/
+</code></pre><p>在使用百度提供的描点方法的时候，发现对箱线图的上下限确定有一些问题，并因此会导致outlier异常值的错误，这里我将箱线图的Min和Max描点改成了更为直观的Math上下限方法。</p>
+<pre><code>//fanyer自定义
+var low = Math.max(ascList[0],Q1 - 1.5* IQR);
 
-/////////////////////////////////////////////////////////
+var high = Math.min(ascList[ascList.length - 1],Q3 + 1.5 * IQR);
 
-//类式继承(用new的继承)
+//console.log(ascList[0]);
+//console.log(low);
 
-function Aaa() {        //父类
-    this.name=&apos;小明&apos;;
-}
-
-Aaa..prototype.showName = function(first_argument) {
-    alert(this.name);
-};
-
-function Bbb() {        //子类
-    Aaa.call(this);        //继承父类构造函数里的属性
-}
-
-Bbb.prototype = new Aaa();    //实现继承Core
-
-//这里继承把属性也继承了，所以这种继承只适合单例模式
-//为了解决这个问题，需要一个中间项
-
-
-//最终的类式继承
-var f = function () {};            //方法继承
-f.prototype = Aaa.prototype;
-
-Bbb.prototype=new f();
-Bbb.prototype.constructer=Bbb;    //修改this指向
-
-
-
-///////////////////////////////////////////////////////////////////////
-
-
-
-
-//原型继承(不需要用new)
-
-var    a={name:&apos;小明&apos;}；
-
-var b= clone(a);
-
-alert(b.name);
-
-function clone(obj) {
-    var F=function () {};
-    F.prototype=obj;
-
-    return new F();
-}
-</code></pre><hr>
-</div>
+//fanyer自定义
+</code></pre></div>
 
             
 <nav class="post-nav flex-row">
   <div class="flex-col waves-block prev">
     
-      <a href="/2016/04/20/echarts扩展之prepareBoxData详解/" title="echarts扩展之prepareBoxData详解" id="post-prev" class="post-nav-link">
-        <i class="icon icon-chevron-left"></i>
-        <span class="article-nav-title">上一篇</span>
-      </a>
-    
   </div>
   <div class="flex-col waves-block next">
+    
+      <a href="/2016/04/20/js里的三种继承/" title="js里的三种继承" id="post-next" class="post-nav-link">
+        <span class="article-nav-title">下一篇</span>
+        <i class="icon icon-chevron-right"></i>
+      </a>
     
   </div>
 
@@ -282,7 +222,7 @@ function clone(obj) {
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="js里的三种继承" data-title="js里的三种继承" data-url="http://yoursite.com/2016/04/20/js里的三种继承/index.html"></div>
+	<div class="ds-thread" data-thread-key="echarts扩展之prepareBoxData详解" data-title="echarts扩展之prepareBoxData详解" data-url="http://yoursite.com/2016/04/20/echarts扩展之prepareBoxData详解/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -321,10 +261,10 @@ function clone(obj) {
 
 <script>
 var BLOG_SHARE = {
-    title: "js里的三种继承",
+    title: "echarts扩展之prepareBoxData详解",
     pic: "/img/me.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://yoursite.com/2016/04/20/js里的三种继承/index.html"
+    url: "http://yoursite.com/2016/04/20/echarts扩展之prepareBoxData详解/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
