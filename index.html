@@ -117,6 +117,67 @@
   <ul class="post-list">
   
     <li class="post-list-item">
+  <article id="post-angular：关于scope" class="article article-type-post" itemprop="blogPost">
+    
+      
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2016/05/02/angular：关于scope/">angular：关于scope</a>
+    </h3>
+  
+
+
+
+      <div class="post-meat flex-row">
+        <div class="flex-col"></div>
+        <time datetime="2016-05-01T16:26:37.000Z" itemprop="datePublished" class="post-tiem">
+  2016-05-02
+</time>
+      </div>
+      <div class="post-content" id="post-content" itemprop="postContent" >
+        
+          <p>$scope是angular内部提供的变量。</p>
+<p>scope一般指的是scope directive service等等这种概念。</p>
+<p>从变量上讲</p>
+<pre><code>function($scope){
+
+}
+</code></pre><p>和</p>
+<pre><code>function(scope){
+
+}
+</code></pre><p>没有任何区别。</p>
+<p>但是上面的scope或者$scope对象是angular内部提供的对象，我们一般通过依赖注入的方式获取这个对象，如果你通过显示依赖的方式：</p>
+<pre><code>app.controller(&quot;MainCtrl&quot;,[&quot;$scope&quot;,function(scopeObject){
+
+}]);
+</code></pre><p>注入的变量名必须是$scope，函数里面的形参就无所谓了。</p>
+<p>如果是隐式注入，</p>
+<pre><code>app.controller(&quot;MainCtrl&quot;,function($scope){
+
+});
+</code></pre><p>函数形参必须是$scope</p>
+<p>隐式注入的代码</p>
+<pre><code>app.controller(&quot;MainCtrl&quot;,function($scope){
+
+});
+</code></pre><p>可以通过隐式注入的形式注入$scope，但进行js代码压缩时通常会将变量名替换成 \a\b\c等简写方式，从而造成隐式注入失败。所以一般都使用显示注入的方式。此时，使用$scope还是scope就成了编码规范的一部分，没有任何区别了。</p>
+
+        
+      </div>
+      <div class="post-footer clearfix">
+        <a href="/2016/05/02/angular：关于scope/" class="post-more waves-button-light">MORE</a>
+      </div>
+    
+
+  </article>
+
+
+</li>
+  
+    <li class="post-list-item">
   <article id="post-echarts扩展之prepareBoxData详解" class="article article-type-post" itemprop="blogPost">
     
       

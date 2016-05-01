@@ -3,26 +3,56 @@
 <head>
   <meta charset="utf-8">
   
-  <title>echarts扩展之prepareBoxData详解 | fanyer的blog | null</title>
+  <title>angular：关于scope | fanyer的blog | null</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   <meta name="keywords" content="">
-  <meta name="description" content="@(echarts)[箱线图|预处理|Markdown]
+  <meta name="description" content="$scope是angular内部提供的变量。
+scope一般指的是scope directive service等等这种概念。
+从变量上讲
+function($scope){
 
-   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot为官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个预解析模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepareBoxPlot，但是没有文档和特殊说明，有时候会">
+}
+和
+function(scope){
+
+}
+没有任何区别。
+但是上面的scope或者$scope对象是angular内部提供的对象，我们一般通过依赖注入的方式获取这个对象，如果你通过显示依赖的方式：
+app.contr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="echarts扩展之prepareBoxData详解">
-<meta property="og:url" content="http://yoursite.com/2016/04/20/echarts扩展之prepareBoxData详解/index.html">
+<meta property="og:title" content="angular：关于scope">
+<meta property="og:url" content="http://yoursite.com/2016/05/02/angular：关于scope/index.html">
 <meta property="og:site_name" content="fanyer的blog">
-<meta property="og:description" content="@(echarts)[箱线图|预处理|Markdown]
+<meta property="og:description" content="$scope是angular内部提供的变量。
+scope一般指的是scope directive service等等这种概念。
+从变量上讲
+function($scope){
 
-   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot为官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个预解析模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepareBoxPlot，但是没有文档和特殊说明，有时候会">
-<meta property="og:updated_time" content="2016-04-22T02:10:30.000Z">
+}
+和
+function(scope){
+
+}
+没有任何区别。
+但是上面的scope或者$scope对象是angular内部提供的对象，我们一般通过依赖注入的方式获取这个对象，如果你通过显示依赖的方式：
+app.contr">
+<meta property="og:updated_time" content="2016-05-01T16:30:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="echarts扩展之prepareBoxData详解">
-<meta name="twitter:description" content="@(echarts)[箱线图|预处理|Markdown]
+<meta name="twitter:title" content="angular：关于scope">
+<meta name="twitter:description" content="$scope是angular内部提供的变量。
+scope一般指的是scope directive service等等这种概念。
+从变量上讲
+function($scope){
 
-   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot为官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个预解析模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepareBoxPlot，但是没有文档和特殊说明，有时候会">
+}
+和
+function(scope){
+
+}
+没有任何区别。
+但是上面的scope或者$scope对象是angular内部提供的对象，我们一般通过依赖注入的方式获取这个对象，如果你通过显示依赖的方式：
+app.contr">
   
     <link rel="alternative" href="/atom.xml" title="fanyer的blog" type="application/atom+xml">
   
@@ -104,7 +134,7 @@
         <a href="javascript:;" class="header-icon waves-circle-light on" id="menu-toggle">
           <i class="icon icon-lg icon-navicon"></i>
         </a>
-        <div class="flex-col header-title ellipsis">echarts扩展之prepareBoxData详解</div>
+        <div class="flex-col header-title ellipsis">angular：关于scope</div>
         
         <a href="javascript:;" class="header-icon waves-circle-light" id="menu-share">
             <i class="icon icon-lg icon-share-alt"></i>
@@ -114,14 +144,14 @@
 </header>
 <header class="content-header">
   <div class="container">
-    <h1 class="author">echarts扩展之prepareBoxData详解</h1>
-    <h5 class="subtitle">2016-04-20</h5>
+    <h1 class="author">angular：关于scope</h1>
+    <h5 class="subtitle">2016-05-02</h5>
   </div>
 </header>
 
     <div class="container body-wrap">
       
-  <article id="post-echarts扩展之prepareBoxData详解" class="article article-type-post" itemprop="blogPost">
+  <article id="post-angular：关于scope" class="article article-type-post" itemprop="blogPost">
     
       <div class="post-meat flex-row">
         <div class="flex-col"></div>
@@ -178,42 +208,42 @@
 
         <div class="post-main">
 
-            <div class="post-content" id="post-content" itemprop="postContent"><p>@(echarts)[箱线图|预处理|Markdown]</p>
-<hr>
-<p>   echarts官网只对非扩展模块做了文档和实例，其中箱线图BoxPLot为官方内置模块，在componets目录下而大多数时候箱线图都会用到prepareBoxPlot这个预解析模块，该模块位于extension/dataTool目录下，百度官方将echarts下载集成了prepareBoxPlot，但是没有文档和特殊说明，有时候会出一些问题/</p>
-<pre><code>/*
-var low = boundIQR === &apos;none&apos;
-    ? ascList[0]
-    : Q1 - (boundIQR == null ? 1.5 : boundIQR) * IQR;
-var high = boundIQR === &apos;none&apos;
-    ? ascList[ascList.length - 1]
-    : Q3 + (boundIQR == null ? 1.5 : boundIQR) * IQR;
-*/
-</code></pre><p>在使用百度提供的描点方法的时候，发现对箱线图的上下限确定有一些问题，并因此会导致outlier异常值的错误，这里我将箱线图的Min和Max描点改成了更为直观的Math上下限方法。</p>
-<pre><code>//fanyer修正上下界
-var low = Math.max(ascList[0],Q1 - 1.5* IQR);
+            <div class="post-content" id="post-content" itemprop="postContent"><p>$scope是angular内部提供的变量。</p>
+<p>scope一般指的是scope directive service等等这种概念。</p>
+<p>从变量上讲</p>
+<pre><code>function($scope){
 
-var high = Math.min(ascList[ascList.length - 1],Q3 + 1.5 * IQR);
+}
+</code></pre><p>和</p>
+<pre><code>function(scope){
 
-//console.log(ascList[0]);
-//console.log(low);
+}
+</code></pre><p>没有任何区别。</p>
+<p>但是上面的scope或者$scope对象是angular内部提供的对象，我们一般通过依赖注入的方式获取这个对象，如果你通过显示依赖的方式：</p>
+<pre><code>app.controller(&quot;MainCtrl&quot;,[&quot;$scope&quot;,function(scopeObject){
 
-//fanyer修正上下界
-</code></pre></div>
+}]);
+</code></pre><p>注入的变量名必须是$scope，函数里面的形参就无所谓了。</p>
+<p>如果是隐式注入，</p>
+<pre><code>app.controller(&quot;MainCtrl&quot;,function($scope){
+
+});
+</code></pre><p>函数形参必须是$scope</p>
+<p>隐式注入的代码</p>
+<pre><code>app.controller(&quot;MainCtrl&quot;,function($scope){
+
+});
+</code></pre><p>可以通过隐式注入的形式注入$scope，但进行js代码压缩时通常会将变量名替换成 \a\b\c等简写方式，从而造成隐式注入失败。所以一般都使用显示注入的方式。此时，使用$scope还是scope就成了编码规范的一部分，没有任何区别了。</p>
+</div>
 
             
 <nav class="post-nav flex-row">
   <div class="flex-col waves-block prev">
     
-      <a href="/2016/05/02/angular：关于scope/" title="angular：关于scope" id="post-prev" class="post-nav-link">
-        <i class="icon icon-chevron-left"></i>
-        <span class="article-nav-title">上一篇</span>
-      </a>
-    
   </div>
   <div class="flex-col waves-block next">
     
-      <a href="/2016/04/20/js里的三种继承/" title="js里的三种继承" id="post-next" class="post-nav-link">
+      <a href="/2016/04/20/echarts扩展之prepareBoxData详解/" title="echarts扩展之prepareBoxData详解" id="post-next" class="post-nav-link">
         <span class="article-nav-title">下一篇</span>
         <i class="icon icon-chevron-right"></i>
       </a>
@@ -227,7 +257,7 @@ var high = Math.min(ascList[ascList.length - 1],Q3 + 1.5 * IQR);
             
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="echarts扩展之prepareBoxData详解" data-title="echarts扩展之prepareBoxData详解" data-url="http://yoursite.com/2016/04/20/echarts扩展之prepareBoxData详解/index.html"></div>
+	<div class="ds-thread" data-thread-key="angular：关于scope" data-title="angular：关于scope" data-url="http://yoursite.com/2016/05/02/angular：关于scope/index.html"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -266,10 +296,10 @@ var high = Math.min(ascList[ascList.length - 1],Q3 + 1.5 * IQR);
 
 <script>
 var BLOG_SHARE = {
-    title: "echarts扩展之prepareBoxData详解",
+    title: "angular：关于scope",
     pic: "/img/me.jpg",
     summary: document.getElementsByName('summary')[0].content,
-    url: "http://yoursite.com/2016/04/20/echarts扩展之prepareBoxData详解/index.html"
+    url: "http://yoursite.com/2016/05/02/angular：关于scope/index.html"
 };
 </script>
 <div class="global-share" id="global-share">
