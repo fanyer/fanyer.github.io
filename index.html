@@ -1,18 +1,241 @@
----
-　　layout: default
-　　title: 我的Blog
----
+<!DOCTYPE html>
+<html>
 
-　　<h2>{{ page.title }}</h2>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-　　<p>最新文章</p>
+  <title>fanyer</title>
+  <meta name="description" content="">
+  <meta name="author" content="Wei Wang">
 
-　　<ul>
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="fanyer">
+  <meta name="twitter:description" content="">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="fanyer">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-　　　　{% for post in site.posts %}
+  <link rel="canonical" href="http://localhost:4000/">
+  <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
 
-　　　　　　<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
 
-　　　　{% endfor %}
+  <body>
 
-　　</ul>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover " style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 fanyer 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="fanyer logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for fanyer" class="blog-button">fanyer</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code, Design, and Things in Between</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">Just Help Yourself</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/sysu_fanyer" title="@sysu_fanyer 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fanyer" title="@fanyer 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:iofanyer@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <div class="main-post-list hidden">
+
+  <ol class="post-list">
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/05/mybatis/" title="访问 Mybatis explore for taste">Mybatis explore for taste</a></h2>
+      <p class="excerpt">数据库连接池使用的是Druid。Mybatis与spring-boot的集成与mybatis与Spring的集成并没有什么不同的地方。可以看这里：demo多了一个@ImportResource("mybatis.xml")注解。如果要引用多个配置，那么就需要自定义配置的引入方式。不然每一个都要去@ImportResource&hellip;</p>
+      <div class="post-list__meta"><time datetime="2017-05-29 20:58:15 +0800" class="post-list__meta--date date">2017-05-29</time> &#8226; <span class="post-list__meta--tags tags">java</span><a class="btn-border-small" href=/2017/05/mybatis/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/04/NAPI-node/" title="访问 NAPI">NAPI</a></h2>
+      <p class="excerpt">Node 7.9之后, C++ Addon有了优雅的写法，需要参考Nan项目,研究了之后发现这也是给写过C++ Addon的人提高效率的，有较多的既定规则，且需要对v8有一定理解。新泽西学院有教授即时跟进布道。&hellip;</p>
+      <div class="post-list__meta"><time datetime="2017-04-02 13:48:52 +0800" class="post-list__meta--date date">2017-04-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2017/04/NAPI-node/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/04/caddy-ace/" title="访问 caddy ace">caddy ace</a></h2>
+      <p class="excerpt">看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点，看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目caddy-ace&hellip;</p>
+      <div class="post-list__meta"><time datetime="2017-04-02 13:48:52 +0800" class="post-list__meta--date date">2017-04-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2017/04/caddy-ace/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2017/03/TreeShaking/" title="访问 Tree Shaking">Tree Shaking</a></h2>
+      <p class="excerpt">Rich Harris 的模块打包器 Rollup 普及了 JavaScript 圈内一个重要的特性：Tree-shaking，即从模块包中排除未使用的 exports 项。Rollup 基于 ES6 模块的静态结构（引入和导出不会在运行时改变）来检测哪一个模块没有被使用。Webpack 的 Tree-shaking 特性目前正在 beta 阶段，这篇博文解释了它是如何工作的，相关的项目代码可以在 Github 上查看：Tree-shaking Demo。1. Webpack 2 如何消除...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2017-03-23 23:48:52 +0800" class="post-list__meta--date date">2017-03-23</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2017/03/TreeShaking/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/09/go-make-new/" title="访问 Go 里的 make 和 new 两个函数，how to use？">Go 里的 make 和 new 两个函数，how to use？</a></h2>
+      <p class="excerpt">  注：该文作者是 Dave Cheney，原文地址 Go has both make and new functions, what gives ?这篇博客主要是讨论 Go 的内建函数 make 和 new。如 Rob Pike 在今年的 Gophercon 上提到的，Go 有多种方式初始化变量。其中之一的能力就是获取一个 struct literal 的地址，这导致了几种方式做同样的事情。s := &amp;SomeStruct{}v := SomeStruct{}s := &amp;...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-09-07 23:48:52 +0800" class="post-list__meta--date date">2016-09-07</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/09/go-make-new/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/08/brew-tap/" title="访问 发布brew个人包">发布brew个人包</a></h2>
+      <p class="excerpt">Mac上的包管理工具，一般都推荐使用homebrew。homebrew开源在github上，其中formula文件夹为brew收录的所有包，目前大概是4000个。但是个人制作的小软件不会被官方仓库的formula收录，homebrew官方留出了tap命令使得我们可以将homebrew-core部署到自己的仓库,这样就可以用brew安装我们指定路径下的可执行文件，并将其安装到/usr/lcoal/bin目录下&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-08-23 21:48:52 +0800" class="post-list__meta--date date">2016-08-23</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/08/brew-tap/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/07/AsyncModule-in-Node/" title="访问 commonjs异步模块">commonjs异步模块</a></h2>
+      <p class="excerpt">如何包装基础性的异步模块，有几种方案：1.包装到对象属性上var Wrapper = function(){  this.foo = "bar";  this.init();};Wrapper.prototype.init = function(){  var wrapper = this;    async.function(function(response) {    wrapper.foo = "foobar";  });}module.exports = new Wrapper(...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-07-24 13:48:52 +0800" class="post-list__meta--date date">2016-07-24</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/AsyncModule-in-Node/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/07/metaprograming-in-ruby/" title="访问 某段ruby元编程">某段ruby元编程</a></h2>
+      <p class="excerpt">可以用irb（Ruby的REPL程序）实际运行：class A  [:scope, :show_snippets, :search_results, :search_objects].each do |name|    define_method name do      search      instance_variable_get "@#{name}"    end  end  def search    return if @searched    @scope, @show_s...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-07-10 22:48:52 +0800" class="post-list__meta--date date">2016-07-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/metaprograming-in-ruby/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/06/ruby-invoke-C/" title="访问 Ruby 使用 Fiddle 调用 C 函数">Ruby 使用 Fiddle 调用 C 函数</a></h2>
+      <p class="excerpt">写一个c函数// split.cdouble split(double num){  double ret = 0;  ret = num / 2;  return ret;}编译成动态库gcc -o libsplit.so -shared split.c在 split.rb 里调用 libsplit.so 里的 split 函数require 'fiddle'# Open the filelibsplit = Fiddle.dlopen('./libsplit.so')# Load th...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-06-05 21:38:55 +0800" class="post-list__meta--date date">2016-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/06/ruby-invoke-C/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2015/11/iterator/" title="访问 es6 迭代器">es6 迭代器</a></h2>
+      <p class="excerpt">The iterable protocolThe iterable protocol allows JavaScript objects to define or customize their iteration behavior, such as what values are looped over in a for..of construct. Some built-in types are built-in iterables with a default iteration b...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-11-03 13:48:52 +0800" class="post-list__meta--date date">2015-11-03</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/iterator/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+  </ol>
+
+  <hr class="post-list__divider " />
+
+<nav class="pagination" role="navigation">
+    
+    <span class="pagination__page-number">1 / 2</span>
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/2/#blog">更早 &rarr;</a>
+    
+</nav>
+
+
+</div>
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-05 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
