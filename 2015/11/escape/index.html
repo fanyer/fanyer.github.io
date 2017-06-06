@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>Ruby 使用 Fiddle 调用 C 函数</title>
-  <meta name="description" content="写一个c函数">
+  <title>xss csrf 捋之(2)  some转义for抗xss</title>
+  <meta name="description" content="1.任何js runtime的解决方案XML HTML字符实体```var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []     for (var a in obj) arr.push(a)    return...">
   <meta name="author" content="Wei Wang">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Ruby 使用 Fiddle 调用 C 函数">
-  <meta name="twitter:description" content="写一个c函数">
+  <meta name="twitter:title" content="xss csrf 捋之(2)  some转义for抗xss">
+  <meta name="twitter:description" content="1.任何js runtime的解决方案XML HTML字符实体```var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []     for (var a in obj) arr.push(a)    return...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Ruby 使用 Fiddle 调用 C 函数">
-  <meta property="og:description" content="写一个c函数">
+  <meta property="og:title" content="xss csrf 捋之(2)  some转义for抗xss">
+  <meta property="og:description" content="1.任何js runtime的解决方案XML HTML字符实体```var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []     for (var a in obj) arr.push(a)    return...">
   
   <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
   <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2016/06/ruby-invoke-C/">
+  <link rel="canonical" href="http://localhost:4000/2015/11/escape/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -132,64 +132,87 @@
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2016-06-05 21:38:55 +0800" itemprop="datePublished" class="post-meta__date date">2016-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+      <time datetime="2015-11-29 16:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2015-11-29</time> &#8226; <span class="post-meta__tags tags"></span>
     </div>
-    <h1 class="post-title">Ruby 使用 Fiddle 调用 C 函数</h1>
+    <h1 class="post-title">xss csrf 捋之(2)  some转义for抗xss</h1>
   </header>
 
   <section class="post">
-    <p>写一个c函数</p>
+    <h3 id="1任何js-runtime的解决方案">1.任何js runtime的解决方案</h3>
+<p><a href="https://zh.wikipedia.org/wiki/XML%E4%B8%8EHTML%E5%AD%97%E7%AC%A6%E5%AE%9E%E4%BD%93%E5%BC%95%E7%94%A8%E5%88%97%E8%A1%A8">XML HTML字符实体</a></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>var keys = Object.keys || function(obj) {
+    obj = Object(obj)
+    var arr = []   
+    for (var a in obj) arr.push(a)
+    return arr
+}
+var invert = function(obj) {
+    obj = Object(obj)
+    var result = {}
+    for (var a in obj) result[obj[a]] = a
+    return result
+}
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// split.c
 
-double split(double num)
-{
-  double ret = 0;
-  ret = num / 2;
-  return ret;
+var entityMap = {
+    escape: {
+      '&amp;': '&amp;amp;',
+      '&lt;': '&amp;lt;',
+      '&gt;': '&amp;gt;',
+      '"': '&amp;quot;',
+      "'": "&amp;apos;"
+    }
+}
+entityMap.unescape = invert(entityMap.escape)
+var entityReg = {
+    escape: RegExp('[' + keys(entityMap.escape).join('') + ']', 'g'),
+    unescape: RegExp('(' + keys(entityMap.unescape).join('|') + ')', 'g')
+}
+
+// 将HTML转义为字符实体
+function escape(html:string) {
+    if (typeof html !== 'string') return ''
+    return html.replace(entityReg.escape, function(match) {
+        return entityMap.escape[match]
+    })
+}
+// 将字符实体转回为HTML
+function unescape(str:string) {
+    if (typeof str !== 'string') return ''
+    return str.replace(entityReg.unescape, function(match) {
+        return entityMap.unescape[match]
+    })   
 }
 </code></pre>
 </div>
 
-<p>编译成动态库</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o libsplit.so -shared split.c
+<h3 id="2-浏览器环境下利用dom-api夹带私货的解决方案">2. 浏览器环境下利用dom API夹带私货的解决方案</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>// 将HTML转义为实体
+function escape(html:string){
+    var elem = document.createElement('div')
+    var txt = document.createTextNode(html)
+    elem.appendChild(txt)
+    return elem.innerHTML;
+}
+// 将实体转回为HTML
+function unescape(str:string) {
+    var elem = document.createElement('div')
+    elem.innerHTML = str
+    return elem.innerText || elem.textContent
+}
 </code></pre>
 </div>
 
-<p>在 split.rb 里调用 libsplit.so 里的 split 函数</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'fiddle'
+<h4 id="3-加个获取textnode的正则爬小说html过滤用">3. 加个获取textNode的正则，爬小说html过滤用</h4>
 
-# Open the file
-libsplit = Fiddle.dlopen('./libsplit.so')
+<div class="highlighter-rouge"><pre class="highlight"><code>const exp2=/&lt;(.|\n)*?&gt;/g
+const exp=/&lt;[^&lt;&gt;]+&gt;/gi
 
-# Load the `split` function
-split = Fiddle::Function.new(
-    libsplit['split'],
-    [Fiddle::TYPE_DOUBLE],
-    Fiddle::TYPE_DOUBLE
-)
-
-# Call the `split` function
-puts split.call(10) # =&gt; 5
+function filter(str) {
+  return str.replace(exp,'')
+}
 </code></pre>
 </div>
-<ul>
-  <li>Fiddle.dlopen，与c中调用动态链接库方法名相同dlopen</li>
-  <li>Fiddle::Function.new 参数为 函数名，参数，返回值</li>
-</ul>
-
-<p>还可以通过 Fiddle::Importer mixin提供的DSL</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>module Test
-  extend Fiddle::Importer
-  dlload './libsplit.so'
-  extern 'double split(double)'
-end
-</code></pre>
-</div>
-
-<p>puts Test.split(10) # =&gt; 5</p>
 
   </section>
 </article>
@@ -199,9 +222,9 @@ end
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/07/metaprograming-in-ruby/" title="link to 某段ruby元编程">某段ruby元编程</a></h2>
-       <p class="excerpt">可以用irb（Ruby的REPL程序）实际运行：class A  [:scope, :show_snippets, :search_results, :search_objects].each do |name|    define_method name do      search      instance_variable_get "@#{name}"    end  end  def search    return if @searched    @scope, @show_s...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-07-10 22:48:52 +0800" class="post-list__meta--date date">2016-07-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/metaprograming-in-ruby/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/11/security/" title="link to xss csrf 捋之">xss csrf 捋之</a></h2>
+       <p class="excerpt">XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。  XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/security/>继续阅读</a></div>
    </div>
    
    
@@ -209,9 +232,9 @@ end
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/04/caddy-ace/" title="link to caddy ace">caddy ace</a></h2>
-       <p class="excerpt">看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目caddy-acecaddy为扩展提供了RegisterPlugin方法，一般在插件包的init函数中调用，使用方法如下：caddy.RegisterPlugin("basicauth", caddy...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-04-30 13:48:52 +0800" class="post-list__meta--date date">2016-04-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/04/caddy-ace/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/11/iterator/" title="link to es6 迭代器">es6 迭代器</a></h2>
+       <p class="excerpt">The iterable protocolThe iterable protocol allows JavaScript objects to define or customize their iteration behavior, such as what values are looped over in a for..of construct. Some built-in types are built-in iterables with a default iteration b...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-11-03 13:48:52 +0800" class="post-list__meta--date date">2015-11-03</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/iterator/>继续阅读</a></div>
    </div>
    
 </section>
@@ -222,8 +245,8 @@ end
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2016/06/ruby-invoke-C/";
-        this.page.identifier = "/2016/06/ruby-invoke-C/";
+        this.page.url = "http://localhost:4000/2015/11/escape/";
+        this.page.identifier = "/2015/11/escape/";
     };
 
     var disqus_shortname = 'fanyer';

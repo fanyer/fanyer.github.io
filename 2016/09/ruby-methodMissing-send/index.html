@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>Ruby 使用 Fiddle 调用 C 函数</title>
-  <meta name="description" content="写一个c函数">
+  <title>ruby 元编程  method_missing send</title>
+  <meta name="description" content="  method_missing，顾名思义，在方法找不到时被调用。有了这个强大元编程工具，我们就能创建动态的方法，比如ActiveRecord中的动态finder">
   <meta name="author" content="Wei Wang">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Ruby 使用 Fiddle 调用 C 函数">
-  <meta name="twitter:description" content="写一个c函数">
+  <meta name="twitter:title" content="ruby 元编程  method_missing send">
+  <meta name="twitter:description" content="  method_missing，顾名思义，在方法找不到时被调用。有了这个强大元编程工具，我们就能创建动态的方法，比如ActiveRecord中的动态finder">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Ruby 使用 Fiddle 调用 C 函数">
-  <meta property="og:description" content="写一个c函数">
+  <meta property="og:title" content="ruby 元编程  method_missing send">
+  <meta property="og:description" content="  method_missing，顾名思义，在方法找不到时被调用。有了这个强大元编程工具，我们就能创建动态的方法，比如ActiveRecord中的动态finder">
   
   <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
   <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2016/06/ruby-invoke-C/">
+  <link rel="canonical" href="http://localhost:4000/2016/09/ruby-methodMissing-send/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -132,64 +132,66 @@
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2016-06-05 21:38:55 +0800" itemprop="datePublished" class="post-meta__date date">2016-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+      <time datetime="2016-09-25 20:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2016-09-25</time> &#8226; <span class="post-meta__tags tags"></span>
     </div>
-    <h1 class="post-title">Ruby 使用 Fiddle 调用 C 函数</h1>
+    <h1 class="post-title">ruby 元编程  method_missing send</h1>
   </header>
 
   <section class="post">
-    <p>写一个c函数</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>// split.c
-
-double split(double num)
-{
-  double ret = 0;
-  ret = num / 2;
-  return ret;
-}
-</code></pre>
-</div>
-
-<p>编译成动态库</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o libsplit.so -shared split.c
-</code></pre>
-</div>
-
-<p>在 split.rb 里调用 libsplit.so 里的 split 函数</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'fiddle'
-
-# Open the file
-libsplit = Fiddle.dlopen('./libsplit.so')
-
-# Load the `split` function
-split = Fiddle::Function.new(
-    libsplit['split'],
-    [Fiddle::TYPE_DOUBLE],
-    Fiddle::TYPE_DOUBLE
-)
-
-# Call the `split` function
-puts split.call(10) # =&gt; 5
-</code></pre>
-</div>
-<ul>
-  <li>Fiddle.dlopen，与c中调用动态链接库方法名相同dlopen</li>
-  <li>Fiddle::Function.new 参数为 函数名，参数，返回值</li>
+    <ul>
+  <li>method_missing，顾名思义，在方法找不到时被调用。有了这个强大元编程工具，我们就能创建动态的方法，比如ActiveRecord中的动态finder</li>
 </ul>
 
-<p>还可以通过 Fiddle::Importer mixin提供的DSL</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>class Legislator
+  # Pretend this is a real implementation
+  def find(conditions = {})
+  end
 
-<div class="highlighter-rouge"><pre class="highlight"><code>module Test
-  extend Fiddle::Importer
-  dlload './libsplit.so'
-  extern 'double split(double)'
+  # Define on self, since it's  a class method
+  def self.method_missing(method_sym, *arguments, &amp;block)
+    # the first argument is a Symbol, so you need to_s it if you want to pattern match
+    if method_sym.to_s =~ /^find_by_(.*)$/
+      find($1.to_sym =&gt; arguments.first)
+    else
+      super
+    end
+  end
 end
 </code></pre>
 </div>
 
-<p>puts Test.split(10) # =&gt; 5</p>
+<ul>
+  <li>
+    <p>send，也是一个动态方法调用的强大工具，它的作用的将一个方法以参数的形式传递给对象。
+```
+class Box
+def open_1
+  puts “open box”
+end</p>
+
+    <p>def open_2
+  puts “open lock and open box”
+end</p>
+
+    <p>def open_3
+  puts “It’s a open box”
+end</p>
+
+    <p>def open_4
+  puts “I can’t open box”
+end</p>
+
+    <p>def open_5
+  puts “Oh shit box!”
+end
+end</p>
+  </li>
+</ul>
+
+<p>box = Box.new</p>
+
+<p>box.send(“open_#{num}”)
+```</p>
 
   </section>
 </article>
@@ -199,9 +201,9 @@ end
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/07/metaprograming-in-ruby/" title="link to 某段ruby元编程">某段ruby元编程</a></h2>
-       <p class="excerpt">可以用irb（Ruby的REPL程序）实际运行：class A  [:scope, :show_snippets, :search_results, :search_objects].each do |name|    define_method name do      search      instance_variable_get "@#{name}"    end  end  def search    return if @searched    @scope, @show_s...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-07-10 22:48:52 +0800" class="post-list__meta--date date">2016-07-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/metaprograming-in-ruby/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2016/10/ruby-metaprogramming/" title="link to ruby DSL">ruby DSL</a></h2>
+       <p class="excerpt">Creating a Ruby DSL归纳笔记借用 Creating a Ruby DSL 这篇文章中的例子，假设我们想写一段 HTML 代码:&lt;html&gt;  &lt;body&gt;    &lt;div id="container"&gt;      &lt;ul class="pretty"&gt;        &lt;li class="active"&gt;Item 1&lt;/li&gt;        &lt;li&gt;Item 2&lt;/li&gt;   ...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-10-18 20:48:52 +0800" class="post-list__meta--date date">2016-10-18</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/10/ruby-metaprogramming/>继续阅读</a></div>
    </div>
    
    
@@ -209,9 +211,9 @@ end
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/04/caddy-ace/" title="link to caddy ace">caddy ace</a></h2>
-       <p class="excerpt">看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目caddy-acecaddy为扩展提供了RegisterPlugin方法，一般在插件包的init函数中调用，使用方法如下：caddy.RegisterPlugin("basicauth", caddy...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-04-30 13:48:52 +0800" class="post-list__meta--date date">2016-04-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/04/caddy-ace/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2016/09/go-make-new/" title="link to Go 里的 make 和 new 两个函数，how to use？">Go 里的 make 和 new 两个函数，how to use？</a></h2>
+       <p class="excerpt">  注：该文作者是 Dave Cheney，原文地址 Go has both make and new functions, what gives ?这篇博客主要是讨论 Go 的内建函数 make 和 new。如 Rob Pike 在今年的 Gophercon 上提到的，Go 有多种方式初始化变量。其中之一的能力就是获取一个 struct literal 的地址，这导致了几种方式做同样的事情。s := &amp;SomeStruct{}v := SomeStruct{}s := &amp;...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-09-07 23:48:52 +0800" class="post-list__meta--date date">2016-09-07</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/09/go-make-new/>继续阅读</a></div>
    </div>
    
 </section>
@@ -222,8 +224,8 @@ end
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2016/06/ruby-invoke-C/";
-        this.page.identifier = "/2016/06/ruby-invoke-C/";
+        this.page.url = "http://localhost:4000/2016/09/ruby-methodMissing-send/";
+        this.page.identifier = "/2016/09/ruby-methodMissing-send/";
     };
 
     var disqus_shortname = 'fanyer';
