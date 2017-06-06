@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 05 Jun 2017 05:49:37 +0800</pubDate>
-    <lastBuildDate>Mon, 05 Jun 2017 05:49:37 +0800</lastBuildDate>
+    <pubDate>Tue, 06 Jun 2017 09:32:42 +0800</pubDate>
+    <lastBuildDate>Tue, 06 Jun 2017 09:32:42 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
     
       <item>
@@ -30,14 +30,16 @@
       </item>
     
       <item>
-        <title>NAPI</title>
-        <description>&lt;p&gt;Node 7.9之后, C++ Addon有了优雅的写法，需要参考Nan项目,研究了之后发现这也是给写过C++ Addon的人提高效率的，有较多的既定规则，且需要对v8有一定理解。&lt;/p&gt;
+        <title>caddy ace</title>
+        <description>&lt;p&gt;看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。&lt;/p&gt;
 
-&lt;p&gt;新泽西学院有教授即时跟进布道。&lt;/p&gt;
+&lt;p&gt;今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点，看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/fanyer/caddy-ace&quot;&gt;caddy-ace&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sun, 02 Apr 2017 13:48:52 +0800</pubDate>
-        <link>http://localhost:4000/2017/04/NAPI-node/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/04/NAPI-node/</guid>
+        <pubDate>Sun, 30 Apr 2017 13:48:52 +0800</pubDate>
+        <link>http://localhost:4000/2017/04/caddy-ace/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/04/caddy-ace/</guid>
         
         
         <category>jekyll</category>
@@ -47,16 +49,14 @@
       </item>
     
       <item>
-        <title>caddy ace</title>
-        <description>&lt;p&gt;看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。&lt;/p&gt;
+        <title>NAPI</title>
+        <description>&lt;p&gt;Node 7.9之后, C++ Addon有了优雅的写法，需要参考Nan项目,研究了之后发现这也是给写过C++ Addon的人提高效率的，有较多的既定规则，且需要对v8有一定理解。&lt;/p&gt;
 
-&lt;p&gt;今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点，看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/fanyer/caddy-ace&quot;&gt;caddy-ace&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;新泽西学院有教授即时跟进布道。&lt;/p&gt;
 </description>
         <pubDate>Sun, 02 Apr 2017 13:48:52 +0800</pubDate>
-        <link>http://localhost:4000/2017/04/caddy-ace/</link>
-        <guid isPermaLink="true">http://localhost:4000/2017/04/caddy-ace/</guid>
+        <link>http://localhost:4000/2017/04/NAPI-node/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/04/NAPI-node/</guid>
         
         
         <category>jekyll</category>
@@ -199,6 +199,100 @@ elem.innerHTML = `Output: ${foo()}`;
         <pubDate>Thu, 23 Mar 2017 23:48:52 +0800</pubDate>
         <link>http://localhost:4000/2017/03/TreeShaking/</link>
         <guid isPermaLink="true">http://localhost:4000/2017/03/TreeShaking/</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>ruby DSL</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://www.leighhalliday.com/creating-ruby-dsl&quot;&gt;Creating a Ruby DSL&lt;/a&gt;归纳笔记&lt;/p&gt;
+
+&lt;p&gt;借用 Creating a Ruby DSL 这篇文章中的例子，假设我们想写一段 HTML 代码:&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;ul&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;pretty&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;active&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Item 1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;li&amp;gt;&lt;/span&gt;Item 2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;但又感觉手写代码太麻烦，希望简化它，所以使用一个自创的 DSL:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;html = HTMLMaker.new.document do
+  body do
+    div id: &quot;container&quot; do
+      ul class: &quot;pretty&quot; do
+        li &quot;Item 1&quot;, class: :active
+        li &quot;Item 2&quot;
+      end
+    end
+  end
+end
+# 这个 html 变量是一个字符串，值就是上面的 HTML 文档
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;在实际开发时，元编程通常以两种形式体现出他的威力:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;提供反射的功能，通过 API 来提供对运行时环境的访问和修改能力
+提供执行字符串格式代码的能力&lt;/li&gt;
+  &lt;li&gt;在 Ruby 中，我们可以随意为任何一个类添加、修改甚至删除方法。调用不存在方法时，可以统一进行转发:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class TestMissing
+  def method_missing(m, *args, &amp;amp;block)
+    puts &quot;方法名：#{m}，参数：#{args}，闭包：#{block}&quot;
+  end
+end
+
+TestMissing.new.say &quot;Hello&quot;, &quot;World&quot; do
+  puts &quot;Hello, world&quot;
+end
+# 方法名：say，参数：[&quot;Hello&quot;, &quot;World&quot;]，闭包：#&amp;lt;Proc:0x007feeea03cb00@t.ruby:7&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;然后如何利用这个特性来实现dsl&quot;&gt;然后如何利用这个特性来实现dsl&lt;/h4&gt;
+
+&lt;p&gt;首先我们要定义一个 HTMLMaker 类，并且把 document 方法作为入口。这个方法接收一个闭包，闭包中调用 body 函数，这个函数也提供了闭包，闭包中调用了 div 方法，并且有一个参数 id: “container”……&lt;/p&gt;
+
+&lt;p&gt;可见这其实是一个递归调用，无论是 body 还是 div，他们对应着 HTML 标签，其实都是一些并列的方法，方法可以接受若干个键值对，也就是 HTML 中标签的属性，最后再跟上一个闭包用来创建隶属于自己的子标签。&lt;/p&gt;
+
+&lt;p&gt;如果不用 Ruby，我们需要事先知道所有的 HTML 标签名，然后进行匹配，可想工作量有多大。而在 Ruby 中，他们都是并列关系，可以统一转发到 method_missing 方法中，获取方法名、参数和闭包。&lt;/p&gt;
+
+&lt;p&gt;我们首先解析参数，配合方法名拼凑出当前标签的字符串，然后递归调用闭包即可，核心代码如下:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def method_missing(m, *args, &amp;amp;block)
+    tag(m, args, &amp;amp;block)
+end
+
+def tag(html_tag, args, &amp;amp;block)
+  # indent 用来记录行首的空格缩进
+  # options 表示解析后的 HTML 属性，比如 id=&quot;container&quot;， content 则是标签中的内容
+  html &amp;lt;&amp;lt; &quot;\n#{indent}&amp;lt;#{html_tag}#{options}&amp;gt;#{content}&quot;
+  if block_given? # 如果传递了闭包，递归执行
+    instance_eval(&amp;amp;block) # 递归执行闭包
+    html &amp;lt;&amp;lt; &quot;\n#{indent}&quot;
+  end
+  html &amp;lt;&amp;lt; &quot;&amp;lt;/#{html_tag}&amp;gt;&quot;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;这里的 instance_eval 也是一种元编程，表示以当前实例为上下文，执行闭包，具体用途可以参考这篇文章: &lt;a href=&quot;https://4loc.wordpress.com/2009/05/29/eval-module_eval-and-instance_eval/&quot;&gt;Eval, module_eval, and instance_eval&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Oct 2016 20:48:52 +0800</pubDate>
+        <link>http://localhost:4000/2016/10/ruby-metaprogramming/</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/10/ruby-metaprogramming/</guid>
         
         
         <category>jekyll</category>
@@ -511,45 +605,6 @@ end
         <pubDate>Sun, 05 Jun 2016 21:38:55 +0800</pubDate>
         <link>http://localhost:4000/2016/06/ruby-invoke-C/</link>
         <guid isPermaLink="true">http://localhost:4000/2016/06/ruby-invoke-C/</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>update</category>
-        
-      </item>
-    
-      <item>
-        <title>es6 迭代器</title>
-        <description>&lt;h2 id=&quot;the-iterable-protocol&quot;&gt;The iterable protocol&lt;/h2&gt;
-
-&lt;p&gt;The iterable protocol allows JavaScript objects to define or customize their iteration behavior, such as what values are looped over in a for..of construct. Some built-in types are built-in iterables with a default iteration behavior, such as Array or Map, while other types (such as Object) are not.&lt;/p&gt;
-
-&lt;p&gt;In order to be iterable, an object must implement the @@iterator method, meaning that the object (or one of the objects up its prototype chain) must have a property with a @@iterator key which is available via constant Symbol.iterator:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Property&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;Value&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;[Symbol.iterator]&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;A zero arguments function that returns an object, conforming to the iterator protocol.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;the-iterator-protocol&quot;&gt;The iterator protocol&lt;/h2&gt;
-&lt;p&gt;The iterator protocol defines a standard way to produce a sequence of values (either finite or infinite).&lt;/p&gt;
-
-&lt;p&gt;An object is an iterator when it implements a next() method with the following semantics:&lt;/p&gt;
-</description>
-        <pubDate>Tue, 03 Nov 2015 13:48:52 +0800</pubDate>
-        <link>http://localhost:4000/2015/11/iterator/</link>
-        <guid isPermaLink="true">http://localhost:4000/2015/11/iterator/</guid>
         
         
         <category>jekyll</category>
