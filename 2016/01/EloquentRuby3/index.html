@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Eloquent Ruby (Chapter 3) 手记</title>
+  <meta name="description" content="1. Literal ShortcutsArray和Hash可以用方便的字面量结构来定义：poem_words = %w {twinkle  little star how i wonder}或括号：poem_words = %w (twinkle  little star how i wonder)Hash在R...">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Eloquent Ruby (Chapter 3) 手记">
+  <meta name="twitter:description" content="1. Literal ShortcutsArray和Hash可以用方便的字面量结构来定义：poem_words = %w {twinkle  little star how i wonder}或括号：poem_words = %w (twinkle  little star how i wonder)Hash在R...">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Eloquent Ruby (Chapter 3) 手记">
+  <meta property="og:description" content="1. Literal ShortcutsArray和Hash可以用方便的字面量结构来定义：poem_words = %w {twinkle  little star how i wonder}或括号：poem_words = %w (twinkle  little star how i wonder)Hash在R...">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2016/01/EloquentRuby3/">
+  <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 fanyer 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="fanyer logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for fanyer" class="blog-button">fanyer</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code, Design, and Things in Between</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">Just Help Yourself</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/sysu_fanyer" title="@sysu_fanyer 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fanyer" title="@fanyer 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:iofanyer@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2016-01-02 15:28:32 +0800" itemprop="datePublished" class="post-meta__date date">2016-01-02</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">Eloquent Ruby (Chapter 3) 手记</h1>
+  </header>
+
+  <section class="post">
+    <h3 id="1-literal-shortcuts">1. Literal Shortcuts</h3>
+<p>Array和Hash可以用方便的字面量结构来定义：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>poem_words = %w {twinkle  little star how i wonder}
+</code></pre>
+</div>
+<p>或括号：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>poem_words = %w (twinkle  little star how i wonder)
+</code></pre>
+</div>
+<p>Hash在Ruby1.9之后，有更方便的写法：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>book_info = {first_name: ‘Russ’, last_name: ‘Olsen’}
+</code></pre>
+</div>
+
+<h3 id="2-instant-arrays-and-hashes-from-method-calls">2. Instant Arrays and Hashes from Method Calls</h3>
+<p>当给方法传多个参数的时候，使用星号*标记，来把参数包装为一个数组。例如：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>def add_authors( *names )
+  @author + " #{names.join(' ')}"
+end
+</code></pre>
+</div>
+<p>Hash也类似，</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>def load_font( specification_hash )
+  # Load a font according to specification_hash[:name] etc.
+end
+</code></pre>
+</div>
+<p>可以给这个方法传任意参数：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>load_font( :name &gt; 'times roman', :size &gt; 12 )
+</code></pre>
+</div>
+<p>还可以更进一步， 去掉括号，这样看起来更像是命令，而不像方法调用。</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>load_font :name &gt; 'times roman', :size &gt; 12
+</code></pre>
+</div>
+
+<h3 id="3--running-through-your-collection">3.  Running Through Your Collection</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>def index_for( word )
+  words.find_index { |this_word| word = this_word }
+end
+</code></pre>
+</div>
+<p>map,  inject 方法。</p>
+
+<h3 id="4--beware-the-bang">4.  Beware the Bang!</h3>
+<p>当心带叹号的方法。
+还有<code class="highlighter-rouge">push</code>, <code class="highlighter-rouge">pop</code>, <code class="highlighter-rouge">delete</code>, 和<code class="highlighter-rouge">shift</code>，<code class="highlighter-rouge">unshift</code>也会改变数组自身。</p>
+
+<h3 id="5-rely-on-the-order-of-your-hashes">5. Rely on the Order of Your Hashes</h3>
+<p>在Ruby1.9中， Array和Hash都是有序的。当你创建了一个新的hash：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>hey_its_ordered = { first: 'mama', second: 'papa', third: 'baby' }
+</code></pre>
+</div>
+<p>然后：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>hey_its_ordered.each { |entry| pp entry }
+#会输出：
+[:first, "mama"]
+[:second, "papa"]
+[:third, "baby"]
+</code></pre>
+</div>
+<h3 id="6--staying-out-of-trouble">6.  Staying Out of Trouble</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>array ＝ [ 0, -10, -9, 5, 9 ]
+array.each_index {|i| array.delete_at(i) if array[i] &lt; 0}
+pp array
+</code></pre>
+</div>
+<p>这段代码会输出：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>[0, -9, 5, 9]
+</code></pre>
+</div>
+<p>为什么呢？
+因为当删除－10的时候，数组的内部索引被弄乱了，所以把-9漏掉了。
+这种问题在上个例子中可能容易发现， 但是，情况并不是总是如此， 特别是当你在不同的线程中共享一个集合的时候， 危险在于， 一个线程正在修改被另一些线程迭代的集合。
+如果需要不重复的集合，我们需要考虑一下Set.</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>require ‘set’
+</code></pre>
+</div>
+<p>但是，需要注意， Set又是无序的。</p>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2016/04/caddy-ace/" title="link to caddy ace">caddy ace</a></h2>
+       <p class="excerpt">看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目caddy-acecaddy为扩展提供了RegisterPlugin方法，一般在插件包的init函数中调用，使用方法如下：caddy.RegisterPlugin("basicauth", caddy...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-04-30 13:48:52 +0800" class="post-list__meta--date date">2016-04-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/04/caddy-ace/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2015/12/EloquentRuby2/" title="link to Eloquent Ruby (Chapter 2) 手记">Eloquent Ruby (Chapter 2) 手记</a></h2>
+       <p class="excerpt">1.  If, Unless, While, and Until基于unless的语句有2个好处： 第一， 它比if not要短。第二， 一旦你习惯用它， 你可以轻松的去理解它。前提是你需要熟悉它，如果不熟悉， 你就像穿错了鞋。 但是对于大多数的程序员来说， 已经习惯于unless。2. Use the Modifier Forms Where Appropriate你可以使用：@title ＝ new_title unless @read_only也可以使用@title  ＝ new_t...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-12-17 21:28:52 +0800" class="post-list__meta--date date">2015-12-17</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/12/EloquentRuby2/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2016/01/EloquentRuby3/";
+        this.page.identifier = "/2016/01/EloquentRuby3/";
+    };
+
+    var disqus_shortname = 'fanyer';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-07 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>

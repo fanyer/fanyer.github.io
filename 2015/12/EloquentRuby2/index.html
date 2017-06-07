@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>caddy ace</title>
-  <meta name="description" content="看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。">
+  <title>Eloquent Ruby (Chapter 2) 手记</title>
+  <meta name="description" content="1.  If, Unless, While, and Until基于unless的语句有2个好处： 第一， 它比if not要短。第二， 一旦你习惯用它， 你可以轻松的去理解它。前提是你需要熟悉它，如果不熟悉， 你就像穿错了鞋。 但是对于大多数的程序员来说， 已经习惯于unless。2. Use the Modi...">
   <meta name="author" content="Wei Wang">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="caddy ace">
-  <meta name="twitter:description" content="看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。">
+  <meta name="twitter:title" content="Eloquent Ruby (Chapter 2) 手记">
+  <meta name="twitter:description" content="1.  If, Unless, While, and Until基于unless的语句有2个好处： 第一， 它比if not要短。第二， 一旦你习惯用它， 你可以轻松的去理解它。前提是你需要熟悉它，如果不熟悉， 你就像穿错了鞋。 但是对于大多数的程序员来说， 已经习惯于unless。2. Use the Modi...">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="caddy ace">
-  <meta property="og:description" content="看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。">
+  <meta property="og:title" content="Eloquent Ruby (Chapter 2) 手记">
+  <meta property="og:description" content="1.  If, Unless, While, and Until基于unless的语句有2个好处： 第一， 它比if not要短。第二， 一旦你习惯用它， 你可以轻松的去理解它。前提是你需要熟悉它，如果不熟悉， 你就像穿错了鞋。 但是对于大多数的程序员来说， 已经习惯于unless。2. Use the Modi...">
   
   <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
   <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2016/04/caddy-ace/">
+  <link rel="canonical" href="http://localhost:4000/2015/12/EloquentRuby2/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -132,32 +132,46 @@
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2016-04-30 13:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2016-04-30</time> &#8226; <span class="post-meta__tags tags"></span>
+      <time datetime="2015-12-17 21:28:52 +0800" itemprop="datePublished" class="post-meta__date date">2015-12-17</time> &#8226; <span class="post-meta__tags tags"></span>
     </div>
-    <h1 class="post-title">caddy ace</h1>
+    <h1 class="post-title">Eloquent Ruby (Chapter 2) 手记</h1>
   </header>
 
   <section class="post">
-    <p>看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。</p>
-
-<p>今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。
-偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目</p>
-
-<p><a href="https://github.com/fanyer/caddy-ace">caddy-ace</a></p>
-
-<p>caddy为扩展提供了<code class="highlighter-rouge">RegisterPlugin</code>方法，一般在插件包的<code class="highlighter-rouge">init</code>函数中调用，使用方法如下：</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>caddy.RegisterPlugin("basicauth", caddy.Plugin{
-    ServerType: "http",
-    Action:     setup,
-})
+    <h3 id="1--if-unless-while-and-until">1.  If, Unless, While, and Until</h3>
+<p>基于unless的语句有2个好处： 第一， 它比if not要短。第二， 一旦你习惯用它， 你可以轻松的去理解它。前提是你需要熟悉它，如果不熟悉， 你就像穿错了鞋。 但是对于大多数的程序员来说， 已经习惯于unless。</p>
+<h3 id="2-use-the-modifier-forms-where-appropriate">2. Use the Modifier Forms Where Appropriate</h3>
+<p>你可以使用：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>@title ＝ new_title unless @read_only
 </code></pre>
 </div>
+<p>也可以使用</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>@title  ＝ new_title if @writable
+</code></pre>
+</div>
+<p>同样：
+你可以使用</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>document.print_next_page while document.pages_available?
+</code></pre>
+</div>
+<p>也可以使用</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>document.print_next_page until document.printed?
+</code></pre>
+</div>
+<p>你可以灵活的使用它，但是要使他们像这样易读：Do this if that.</p>
 
-<p>每个插件作为一个包至少有一个或类似于<code class="highlighter-rouge">setup</code>的方法将其和Caddyfile中指明的配置关联起来。</p>
-
-<p>在setup中初始化了一个相应插件的strut，用于编写插件的实际处理流程。</p>
-
-<p>All in all, caddy是个易于扩展的服务器，但其插件必须在编译期确定，通过配置Caddyfile，可以实现预期内的不停机重启, 但大部分时候不适合作为迭代快速的实际提供服务的服务器。</p>
+<h3 id="3--use-each-not-for">3.  Use each, Not for</h3>
+<p><code class="highlighter-rouge">for</code>是基于<code class="highlighter-rouge">each</code>实现的， 为什么你不直接用<code class="highlighter-rouge">each</code>呢？ 抛弃<code class="highlighter-rouge">for</code>吧。</p>
+<h3 id="4--a-case-of-programming-logic">4.  A Case of Programming Logic</h3>
+<p><code class="highlighter-rouge">case</code>语句是用<code class="highlighter-rouge">===</code>操作符来做比较的。尽量使用<code class="highlighter-rouge">case</code>吧。</p>
+<h3 id="5--staying-out-of-trouble">5.  Staying Out of Trouble</h3>
+<p>Ruby只认false和nil为false
+记住：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>puts 'Sorry Dennis Ritchie, but 0 is true!' if 0
+puts 'Sorry but "false" is not false' if 'false'
+#  均会打印
+</code></pre>
+</div>
 
   </section>
 </article>
@@ -167,9 +181,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/06/ruby-invoke-C/" title="link to Ruby 使用 Fiddle 调用 C 函数">Ruby 使用 Fiddle 调用 C 函数</a></h2>
-       <p class="excerpt">写一个c函数// split.cdouble split(double num){  double ret = 0;  ret = num / 2;  return ret;}编译成动态库gcc -o libsplit.so -shared split.c在 split.rb 里调用 libsplit.so 里的 split 函数require 'fiddle'# Open the filelibsplit = Fiddle.dlopen('./libsplit.so')# Load th...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-06-05 21:38:55 +0800" class="post-list__meta--date date">2016-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/06/ruby-invoke-C/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2016/01/EloquentRuby3/" title="link to Eloquent Ruby (Chapter 3) 手记">Eloquent Ruby (Chapter 3) 手记</a></h2>
+       <p class="excerpt">1. Literal ShortcutsArray和Hash可以用方便的字面量结构来定义：poem_words = %w {twinkle  little star how i wonder}或括号：poem_words = %w (twinkle  little star how i wonder)Hash在Ruby1.9之后，有更方便的写法：book_info = {first_name: ‘Russ’, last_name: ‘Olsen’}2. Instant Arrays and...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-01-02 15:28:32 +0800" class="post-list__meta--date date">2016-01-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/01/EloquentRuby3/>继续阅读</a></div>
    </div>
    
    
@@ -177,9 +191,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/01/EloquentRuby3/" title="link to Eloquent Ruby (Chapter 3) 手记">Eloquent Ruby (Chapter 3) 手记</a></h2>
-       <p class="excerpt">1. Literal ShortcutsArray和Hash可以用方便的字面量结构来定义：poem_words = %w {twinkle  little star how i wonder}或括号：poem_words = %w (twinkle  little star how i wonder)Hash在Ruby1.9之后，有更方便的写法：book_info = {first_name: ‘Russ’, last_name: ‘Olsen’}2. Instant Arrays and...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-01-02 15:28:32 +0800" class="post-list__meta--date date">2016-01-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/01/EloquentRuby3/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/12/escape/" title="link to xss csrf 捋之(2)  some转义for抗xss">xss csrf 捋之(2)  some转义for抗xss</a></h2>
+       <p class="excerpt">1.任何js runtime的解决方案XML HTML字符实体var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []       for (var a in obj) arr.push(a)    return arr}var invert = function(obj) {    obj = Object(obj)    var result = {}    for (var a in ...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-12-06 16:48:52 +0800" class="post-list__meta--date date">2015-12-06</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/12/escape/>继续阅读</a></div>
    </div>
    
 </section>
@@ -190,8 +204,8 @@
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2016/04/caddy-ace/";
-        this.page.identifier = "/2016/04/caddy-ace/";
+        this.page.url = "http://localhost:4000/2015/12/EloquentRuby2/";
+        this.page.identifier = "/2015/12/EloquentRuby2/";
     };
 
     var disqus_shortname = 'fanyer';

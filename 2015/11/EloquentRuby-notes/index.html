@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>Ruby 使用 Fiddle 调用 C 函数</title>
-  <meta name="description" content="写一个c函数">
+  <title>Eloquent Ruby (Chapter 1) 手记</title>
+  <meta name="description" content="1. 代码的优美从缩进开始：Ruby的代码缩进约定： 2个空格。 只用2个空格。2. Go Easy on the Comments注释的时候悠着点儿">
   <meta name="author" content="Wei Wang">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Ruby 使用 Fiddle 调用 C 函数">
-  <meta name="twitter:description" content="写一个c函数">
+  <meta name="twitter:title" content="Eloquent Ruby (Chapter 1) 手记">
+  <meta name="twitter:description" content="1. 代码的优美从缩进开始：Ruby的代码缩进约定： 2个空格。 只用2个空格。2. Go Easy on the Comments注释的时候悠着点儿">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Ruby 使用 Fiddle 调用 C 函数">
-  <meta property="og:description" content="写一个c函数">
+  <meta property="og:title" content="Eloquent Ruby (Chapter 1) 手记">
+  <meta property="og:description" content="1. 代码的优美从缩进开始：Ruby的代码缩进约定： 2个空格。 只用2个空格。2. Go Easy on the Comments注释的时候悠着点儿">
   
   <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
   <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2016/06/ruby-invoke-C/">
+  <link rel="canonical" href="http://localhost:4000/2015/11/EloquentRuby-notes/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -132,64 +132,61 @@
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2016-06-05 21:38:55 +0800" itemprop="datePublished" class="post-meta__date date">2016-06-05</time> &#8226; <span class="post-meta__tags tags"></span>
+      <time datetime="2015-11-24 20:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2015-11-24</time> &#8226; <span class="post-meta__tags tags"></span>
     </div>
-    <h1 class="post-title">Ruby 使用 Fiddle 调用 C 函数</h1>
+    <h1 class="post-title">Eloquent Ruby (Chapter 1) 手记</h1>
   </header>
 
   <section class="post">
-    <p>写一个c函数</p>
+    <h3 id="1-代码的优美从缩进开始">1. 代码的优美从缩进开始：</h3>
+<p>Ruby的代码缩进约定： 2个空格。 只用2个空格。</p>
+<h3 id="2-go-easy-on-the-comments">2. Go Easy on the Comments</h3>
+<p>注释的时候悠着点儿</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>// split.c
+<p>Ruby的注释很简单：#符号后面的任何代码都是注释。</p>
 
-double split(double num)
-{
-  double ret = 0;
-  ret = num / 2;
-  return ret;
-}
+<p>但是真正的问题是：什么时候该注释，多少注释才够？</p>
+
+<p>好的Ruby代码是不需要去写注释的。代码应该能够自己解释自己。当需要注释的时候，最好去解释，这些代码如何去用就够了。而不是你为什么要写它，以及它的算法，或者是你如何使它越来越快。只需要告诉我们，如何去用，能记住下面注释例子就更好了：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># Class that models a plain text document, complete with title
+# and author:
+#
+# doc Document.new( 'Hamlet', 'Shakespeare', 'To be or...' )
+# puts doc.title
+# puts doc.author
+# puts doc.content
+#
+# Document instances know how to parse their content into words:
+#
+# puts doc.words
+# puts doc.word_count
 </code></pre>
 </div>
 
-<p>编译成动态库</p>
+<h3 id="3-camels-for-classes-snakes-everywhere-else">3. Camels for Classes, Snakes Everywhere Else</h3>
+<p>给类命名使用驼峰式，其他都用蛇式（下划线链接的小写字母: <code class="highlighter-rouge">like_this</code>）</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gcc -o libsplit.so -shared split.c
+<p>对于常量，则全部大写: <code class="highlighter-rouge">UPPERCASE</code></p>
+<h3 id="4-parentheses-are-optional-but-are-occasionally">4. Parentheses Are Optional but Are Occasionally</h3>
+<p>Forbidden</p>
+
+<p>括号是可选的，但有时不需要。当方法没有参数，或者只有一个参数，或者只有一个条件的时候， 不需要括号， 是为了保证我们代码的干净。</p>
+
+<h3 id="5---folding-up-those-lines">5.   Folding Up Those Lines</h3>
+<p>某些简单的方法，完全可以写为一行。比如：
+class DocumentException &lt; Exception; end
+逗号分隔。</p>
+
+<h3 id="6--folding-up-those-code-blocks">6.  Folding Up Those Code Blocks</h3>
+<p>同样的， Ruby的blocks也可以写为一行：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>10.times { |n| puts "The number is #{n}" }
 </code></pre>
 </div>
+<p>当然，你也可以使用<code class="highlighter-rouge">do;end</code>, 但是这两种形式的block本质上是一样的，Ruby并不关心你使用哪种。如果你block里就一句代码，就用<code class="highlighter-rouge"><span class="p">{}</span></code>, 如果是多句，就用<code class="highlighter-rouge">do;end</code>.</p>
 
-<p>在 split.rb 里调用 libsplit.so 里的 split 函数</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>require 'fiddle'
-
-# Open the file
-libsplit = Fiddle.dlopen('./libsplit.so')
-
-# Load the `split` function
-split = Fiddle::Function.new(
-    libsplit['split'],
-    [Fiddle::TYPE_DOUBLE],
-    Fiddle::TYPE_DOUBLE
-)
-
-# Call the `split` function
-puts split.call(10) # =&gt; 5
-</code></pre>
-</div>
-<ul>
-  <li>Fiddle.dlopen，与c中调用动态链接库方法名相同dlopen</li>
-  <li>Fiddle::Function.new 参数为 函数名，参数，返回值</li>
-</ul>
-
-<p>还可以通过 Fiddle::Importer mixin提供的DSL</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>module Test
-  extend Fiddle::Importer
-  dlload './libsplit.so'
-  extern 'double split(double)'
-end
-</code></pre>
-</div>
-
-<p>puts Test.split(10) # =&gt; 5</p>
+<h3 id="7-staying-out-of-trouble">7. Staying Out of Trouble</h3>
+<p>当代码太长的时候， 该用do;end就用, 该换行就换行，该上括号就上括号。可读性最重要。</p>
 
   </section>
 </article>
@@ -199,9 +196,9 @@ end
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/07/metaprograming-in-ruby/" title="link to 某段ruby元编程">某段ruby元编程</a></h2>
-       <p class="excerpt">可以用irb（Ruby的REPL程序）实际运行：class A  [:scope, :show_snippets, :search_results, :search_objects].each do |name|    define_method name do      search      instance_variable_get "@#{name}"    end  end  def search    return if @searched    @scope, @show_s...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-07-10 22:48:52 +0800" class="post-list__meta--date date">2016-07-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/metaprograming-in-ruby/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/11/security/" title="link to xss csrf 捋之">xss csrf 捋之</a></h2>
+       <p class="excerpt">XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。  XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/security/>继续阅读</a></div>
    </div>
    
    
@@ -209,9 +206,9 @@ end
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/04/caddy-ace/" title="link to caddy ace">caddy ace</a></h2>
-       <p class="excerpt">看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目caddy-acecaddy为扩展提供了RegisterPlugin方法，一般在插件包的init函数中调用，使用方法如下：caddy.RegisterPlugin("basicauth", caddy...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-04-30 13:48:52 +0800" class="post-list__meta--date date">2016-04-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/04/caddy-ace/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/11/iterator/" title="link to es6 迭代器">es6 迭代器</a></h2>
+       <p class="excerpt">The iterable protocolThe iterable protocol allows JavaScript objects to define or customize their iteration behavior, such as what values are looped over in a for..of construct. Some built-in types are built-in iterables with a default iteration b...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-11-03 13:48:52 +0800" class="post-list__meta--date date">2015-11-03</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/iterator/>继续阅读</a></div>
    </div>
    
 </section>
@@ -222,8 +219,8 @@ end
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2016/06/ruby-invoke-C/";
-        this.page.identifier = "/2016/06/ruby-invoke-C/";
+        this.page.url = "http://localhost:4000/2015/11/EloquentRuby-notes/";
+        this.page.identifier = "/2015/11/EloquentRuby-notes/";
     };
 
     var disqus_shortname = 'fanyer';

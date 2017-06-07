@@ -141,6 +141,27 @@
     </li>
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/01/EloquentRuby3/" title="访问 Eloquent Ruby (Chapter 3) 手记">Eloquent Ruby (Chapter 3) 手记</a></h2>
+      <p class="excerpt">1. Literal ShortcutsArray和Hash可以用方便的字面量结构来定义：poem_words = %w {twinkle  little star how i wonder}或括号：poem_words = %w (twinkle  little star how i wonder)Hash在Ruby1.9之后，有更方便的写法：book_info = {first_name: ‘Russ’, last_name: ‘Olsen’}2. Instant Arrays and...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-01-02 15:28:32 +0800" class="post-list__meta--date date">2016-01-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/01/EloquentRuby3/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2015/12/EloquentRuby2/" title="访问 Eloquent Ruby (Chapter 2) 手记">Eloquent Ruby (Chapter 2) 手记</a></h2>
+      <p class="excerpt">1.  If, Unless, While, and Until基于unless的语句有2个好处： 第一， 它比if not要短。第二， 一旦你习惯用它， 你可以轻松的去理解它。前提是你需要熟悉它，如果不熟悉， 你就像穿错了鞋。 但是对于大多数的程序员来说， 已经习惯于unless。2. Use the Modifier Forms Where Appropriate你可以使用：@title ＝ new_title unless @read_only也可以使用@title  ＝ new_t...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-12-17 21:28:52 +0800" class="post-list__meta--date date">2015-12-17</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/12/EloquentRuby2/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2015/12/escape/" title="访问 xss csrf 捋之(2)  some转义for抗xss">xss csrf 捋之(2)  some转义for抗xss</a></h2>
+      <p class="excerpt">1.任何js runtime的解决方案XML HTML字符实体var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []       for (var a in obj) arr.push(a)    return arr}var invert = function(obj) {    obj = Object(obj)    var result = {}    for (var a in ...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-12-06 16:48:52 +0800" class="post-list__meta--date date">2015-12-06</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/12/escape/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2015/11/security/" title="访问 xss csrf 捋之">xss csrf 捋之</a></h2>
       <p class="excerpt">XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。  XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户...&hellip;</p>
       <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/security/>继续阅读</a></div>
@@ -148,9 +169,9 @@
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2015/11/escape/" title="访问 xss csrf 捋之(2)  some转义for抗xss">xss csrf 捋之(2)  some转义for抗xss</a></h2>
-      <p class="excerpt">1.任何js runtime的解决方案XML HTML字符实体var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []       for (var a in obj) arr.push(a)    return arr}var invert = function(obj) {    obj = Object(obj)    var result = {}    for (var a in ...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/escape/>继续阅读</a></div>
+      <h2 class="post-list__post-title post-title"><a href="/2015/11/EloquentRuby-notes/" title="访问 Eloquent Ruby (Chapter 1) 手记">Eloquent Ruby (Chapter 1) 手记</a></h2>
+      <p class="excerpt">1. 代码的优美从缩进开始：Ruby的代码缩进约定： 2个空格。 只用2个空格。2. Go Easy on the Comments注释的时候悠着点儿Ruby的注释很简单：#符号后面的任何代码都是注释。但是真正的问题是：什么时候该注释，多少注释才够？好的Ruby代码是不需要去写注释的。代码应该能够自己解释自己。当需要注释的时候，最好去解释，这些代码如何去用就够了。而不是你为什么要写它，以及它的算法，或者是你如何使它越来越快。只需要告诉我们，如何去用，能记住下面注释例子就更好了：# Clas...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-11-24 20:48:52 +0800" class="post-list__meta--date date">2015-11-24</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/EloquentRuby-notes/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
@@ -193,7 +214,7 @@
             <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-06 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-07 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
         <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
     </footer>
 </section>
