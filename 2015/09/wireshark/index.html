@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>wireshark filter手记</title>
+  <meta name="description" content="ref1ref2display filterexplanation  A capture filter is used to select which packets should be saved to disk while capturing. For capture filters wireshark us...">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="wireshark filter手记">
+  <meta name="twitter:description" content="ref1ref2display filterexplanation  A capture filter is used to select which packets should be saved to disk while capturing. For capture filters wireshark us...">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="wireshark filter手记">
+  <meta property="og:description" content="ref1ref2display filterexplanation  A capture filter is used to select which packets should be saved to disk while capturing. For capture filters wireshark us...">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2015/09/wireshark/">
+  <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 fanyer 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="fanyer logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for fanyer" class="blog-button">fanyer</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code, Design, and Things in Between</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">Just Help Yourself</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/sysu_fanyer" title="@sysu_fanyer 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fanyer" title="@fanyer 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:iofanyer@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2015-09-03 16:23:52 +0800" itemprop="datePublished" class="post-meta__date date">2015-09-03</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">wireshark filter手记</h1>
+  </header>
+
+  <section class="post">
+    <p><a href="http://biot.com/capstats/bpf.html">ref1</a>
+<a href="https://ask.wireshark.org/questions/6660/what-is-the-difference-between-capture-filter-and-display-filter">ref2</a>
+<a href="https://wiki.wireshark.org/DisplayFilters">display filter</a>
+<a href="https://wiki.wireshark.org/CaptureFilters#Capture_filter_is_not_a_display_filter">explanation</a></p>
+<blockquote>
+  <p>A capture filter is used to select which packets should be saved to disk while capturing. For capture filters wireshark uses the BPF syntax. BPF is module that runs in the kernel and can therefor maintain high rates of capturing because the packets do not have to move from kernel space to user space when filtering. The things that can be filtered on are predefined and limited (compared to display filters) as full dissection has not been done on the packets.</p>
+</blockquote>
+
+<blockquote>
+  <p>Display filters are used to change the view of a capture file. They take advantage of the full dissection of all packets. This makes it possible to do very complex and advanced filtering when analyzing a network tracefile.</p>
+</blockquote>
+
+<p>言之，<code class="highlighter-rouge">capture filter</code>必须是<code class="highlighter-rouge">bfs</code>（<code class="highlighter-rouge">berkerly packet filter</code> 语法）</p>
+
+<h3 id="1capture-filter">1.capture filter</h3>
+
+<p><code class="highlighter-rouge">bpf</code>主要形式是<code class="highlighter-rouge">qualifier</code>+<code class="highlighter-rouge">id</code>(name or number)</p>
+
+<p><code class="highlighter-rouge">qualifier</code>有3种：</p>
+<ul>
+  <li><code class="highlighter-rouge">type</code>, 可能的类型有: <code class="highlighter-rouge">host</code>, <code class="highlighter-rouge">net</code> , <code class="highlighter-rouge">port</code> and <code class="highlighter-rouge">portrange</code>,etc</li>
+  <li><code class="highlighter-rouge">dir</code>, 可能的directon有: <code class="highlighter-rouge">src</code>, <code class="highlighter-rouge">dst</code>, <code class="highlighter-rouge">src or dst</code> and <code class="highlighter-rouge">src and dst</code>, etc</li>
+  <li><code class="highlighter-rouge">protocol</code>, 可能的协议有: <code class="highlighter-rouge">ether</code>, <code class="highlighter-rouge">fddi</code>, <code class="highlighter-rouge">tr</code>, <code class="highlighter-rouge">wlan</code>, <code class="highlighter-rouge">ip</code>, <code class="highlighter-rouge">ip6</code>, <code class="highlighter-rouge">arp</code>, <code class="highlighter-rouge">rarp</code>, <code class="highlighter-rouge">decnet</code>, <code class="highlighter-rouge">tcp</code> and <code class="highlighter-rouge">udp</code> etc</li>
+</ul>
+
+<h3 id="2display-filter">2.display filter</h3>
+<p><a href="https://www.wireshark.org/docs/dfref/">ref</a></p>
+
+<p>该filter 的 <a href="https://wiki.wireshark.org/ColoringRules">ColoringRules</a></p>
+
+<h4 id="examples">Examples</h4>
+
+<p>Show only SMTP (port 25) and ICMP traffic:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> tcp.port eq 25 or icmp
+</code></pre>
+</div>
+
+<p>Show only traffic in the LAN (192.168.x.x), between workstations and servers – no Internet:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>ip.src==192.168.0.0/16 and ip.dst==192.168.0.0/16
+</code></pre>
+</div>
+
+<p>TCP buffer full – Source is instructing Destination to stop sending data</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> tcp.window_size == 0 &amp;&amp; tcp.flags.reset != 1
+</code></pre>
+</div>
+
+<p>Filter on Windows – Filter out noise, while watching Windows Client - DC exchanges</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> smb || nbns || dcerpc || nbss || dns
+</code></pre>
+</div>
+
+<p>Sasser worm: –What sasser really did–</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  ls_ads.opnum==0x09
+</code></pre>
+</div>
+
+<p>Match packets containing the (arbitrary) 3-byte sequence 0x81, 0x60, 0x03 at the beginning of the UDP payload, skipping the 8-byte UDP header. Note that the values for the byte sequence implicitly are in hexadecimal only. (Useful for matching homegrown packet protocols.)</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  udp[8:3]==81:60:03
+</code></pre>
+</div>
+
+<p>The “slice” feature is also useful to filter on the vendor identifier part (OUI) of the MAC address, see the Ethernet page for details. Thus you may restrict the display to only packets from a specific device manufacturer. E.g. for DELL machines only:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  eth.addr[0:3]==00:06:5B
+</code></pre>
+</div>
+
+<p>It is also possible to search for characters appearing anywhere in a field or protocol by using the <code class="highlighter-rouge">contains</code> operator.</p>
+
+<p>Match packets that contains the 3-byte sequence 0x81, 0x60, 0x03 anywhere in the UDP header or payload:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  udp contains 81:60:03
+</code></pre>
+</div>
+
+<p>Match packets where SIP To-header contains the string “a1762” anywhere in the header:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  sip.To contains "a1762"
+</code></pre>
+</div>
+
+<p>The matches, or ~, operator makes it possible to search for text in string fields and byte sequences using a regular expression, using Perl regular expression syntax. Note: Wireshark needs to be built with libpcre in order to be able to use the matches operator.</p>
+
+<p>Match HTTP requests where the last characters in the uri are the characters “gl=se”:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  http.request.uri matches "gl=se$"
+</code></pre>
+</div>
+
+<p>Note: The $ character is a <code class="highlighter-rouge">PCRE</code> punctuation character that matches the end of a string, in this case the end of <code class="highlighter-rouge">http.request.uri</code> field.</p>
+
+<p>Filter by a protocol ( e.g. SIP ) and filter out unwanted IPs:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>  ip.src != xxx.xxx.xxx.xxx &amp;&amp; ip.dst != xxx.xxx.xxx.xxx &amp;&amp; sip
+</code></pre>
+</div>
+
+<h4 id="陷阱">陷阱</h4>
+
+<p>Some filter fields match against multiple protocol fields. For example, “ip.addr” matches against both the IP source and destination addresses in the IP header. The same is true for “tcp.port”, “udp.port”, “eth.addr”, and others. It’s important to note that</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> ip.addr == 10.43.54.65
+</code></pre>
+</div>
+<p>is equivalent to</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> ip.src == 10.43.54.65 or ip.dst == 10.43.54.65
+</code></pre>
+</div>
+
+<p>This can be counterintuitive in some cases. Suppose we want to filter out any traffic to or from 10.43.54.65. We might try the following:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> ip.addr != 10.43.54.65
+</code></pre>
+</div>
+<p>which is equivalent to</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> ip.src != 10.43.54.65 or ip.dst != 10.43.54.65
+</code></pre>
+</div>
+<p>This translates to “pass all traffic except for traffic with a source IPv4 address of 10.43.54.65 and a destination IPv4 address of 10.43.54.65”, which isn’t what we wanted.</p>
+
+<p>Instead we need to negate the expression, like so:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> ! ( ip.addr == 10.43.54.65 )
+</code></pre>
+</div>
+<p>which is equivalent to</p>
+<div class="highlighter-rouge"><pre class="highlight"><code> ! (ip.src == 10.43.54.65 or ip.dst == 10.43.54.65)
+</code></pre>
+</div>
+
+<p>This translates to “pass any traffic except with a source IPv4 address of 10.43.54.65 or a destination IPv4 address of 10.43.54.65”, which is what we wanted.</p>
+
+<p>This can also happen if, for example, you have tunneled protocols, so that you might have two separate IPv4 or IPv6 layers and two separate IPv4 or IPv6 headers, or if you have multiple instances of a field for other reasons, such as multiple IPv6 “next header” fields.</p>
+
+<p>If you have a filter expression of the form name op value, where name is the name of a field, op is a comparison operator such as == or != or &lt; or…, and value is a value against which you’re comparing, it should be thought of as meaning “match a packet if there is at least one instance of the field named name whose value is (equal to, not equal to, less than, …) value”. The negation of that is “match a packet if there are no instances of the field named name whose value is (equal to, not equal to, less than, …) value”; simply negating op, e.g. replacing == with != or &lt; with &gt;=, give you another “if there is at least one” check, which is not the negation of the original check.</p>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2015/09/Qing/" title="link to 大清">大清</a></h2>
+       <p class="excerpt">曾国藩（1811-1872）是前辈 官封一等毅勇侯 武英殿大学士 做过两江总督和直隶总督 谥文正；李鸿章（1823-1901）是他的门生 官封一等肃毅伯 文华殿大学士 湖广总督 署两江总督 直隶总督兼北洋大臣 两广总督 谥文忠；左宗棠（1812-1885）官封二等恪靖侯 东阁大学士 陕甘总督、两江总督兼南洋大臣 还两任军机大臣 谥文襄；张之洞（1837-1909）官至体仁阁大学士 历任山西巡抚、两广总督、湖广总督、署两江总督 军机大臣 谥文襄。      从年龄上讲 曾国藩最长 其次是左宗...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-09-30 20:48:52 +0800" class="post-list__meta--date date">2015-09-30</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/09/Qing/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2014/11/inherit/" title="link to inheritance in prototype">inheritance in prototype</a></h2>
+       <p class="excerpt">### 拷贝继承### 类式继承(用new的继承)  function Aaa() {		//父类    this.name='小明';  }  Aaa..prototype.showName = function(first_argument) {    alert(this.name);  };  function Bbb() {		//子类    Aaa.call(this);		//继承父类构造函数里的属性  }  Bbb.prototype = new Aaa();	//实现继承...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/inherit/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2015/09/wireshark/";
+        this.page.identifier = "/2015/09/wireshark/";
+    };
+
+    var disqus_shortname = 'fanyer';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-08 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
