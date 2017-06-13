@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>caddy ace</title>
-  <meta name="description" content="看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。">
+  <title>移动端适配</title>
+  <meta name="description" content="目前为止出现的一些关于移动端适配的技术方案：">
   <meta name="author" content="Wei Wang">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="caddy ace">
-  <meta name="twitter:description" content="看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。">
+  <meta name="twitter:title" content="移动端适配">
+  <meta name="twitter:description" content="目前为止出现的一些关于移动端适配的技术方案：">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="caddy ace">
-  <meta property="og:description" content="看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。">
+  <meta property="og:title" content="移动端适配">
+  <meta property="og:description" content="目前为止出现的一些关于移动端适配的技术方案：">
   
   <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
   <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2016/04/caddy-ace/">
+  <link rel="canonical" href="http://localhost:4000/2015/08/mobile-adapt/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -132,32 +132,69 @@
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2016-04-30 13:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2016-04-30</time> &#8226; <span class="post-meta__tags tags"></span>
+      <time datetime="2015-08-12 22:15:52 +0800" itemprop="datePublished" class="post-meta__date date">2015-08-12</time> &#8226; <span class="post-meta__tags tags"></span>
     </div>
-    <h1 class="post-title">caddy ace</h1>
+    <h1 class="post-title">移动端适配</h1>
   </header>
 
   <section class="post">
-    <p>看了10天的golang， 写了一些东西，参考tj的n写了gvm环境版本控制，不过是用shell写的。</p>
+    <p>目前为止出现的一些关于移动端适配的技术方案：</p>
 
-<p>今天在migrate模版引擎的时候， 之前是用martini+ ace 写的站点。
-偶然看到了一个封装很规范的go服务器caddy, 所以想要migrate,顺手试了一下给caddy写扩展，项目</p>
+<ul>
+  <li>通过媒体查询的方式即CSS3的<code class="highlighter-rouge">meida queries</code></li>
+  <li>以天猫首页为代表的 <code class="highlighter-rouge">flex</code> 弹性布局</li>
+  <li>以淘宝首页为代表的 <code class="highlighter-rouge">rem</code> + <code class="highlighter-rouge">viewport缩放</code></li>
+  <li>rem 方式</li>
+</ul>
 
-<p><a href="https://github.com/fanyer/caddy-ace">caddy-ace</a></p>
+<h3 id="1-meida-queries">1. Meida Queries</h3>
 
-<p>caddy为扩展提供了<code class="highlighter-rouge">RegisterPlugin</code>方法，一般在插件包的<code class="highlighter-rouge">init</code>函数中调用，使用方法如下：</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>caddy.RegisterPlugin("basicauth", caddy.Plugin{
-    ServerType: "http",
-    Action:     setup,
-})
+<p>meida queries 的方式可以说是我早期采用的布局方式，它主要是通过查询设备的宽度来执行不同的 css 代码，最终达到界面的配置。核心语法是：</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>@media screen and (max-width: 600px) { /*当屏幕尺寸小于600px时，应用下面的CSS样式*/
+  /*你的css代码*/
+}
+</code></pre>
+</div>
+<h4 id="优点">优点</h4>
+
+<ul>
+  <li><code class="highlighter-rouge">media query</code>可以做到设备像素比的判断，方法简单，成本低，特别是对移动和PC维护同一套代码的时候。目前像Bootstrap等框架使用这种方式布局</li>
+  <li>图片便于修改，只需修改css文件</li>
+  <li>调整屏幕宽度的时候不用刷新页面即可响应式展示</li>
+</ul>
+
+<h4 id="缺点">缺点</h4>
+
+<ul>
+  <li>代码量比较大，维护不方便</li>
+  <li>为了兼顾大屏幕或高清设备，会造成其他设备资源浪费，特别是加载图片资源</li>
+  <li>为了兼顾移动端和PC端各自响应式的展示效果，难免会损失各自特有的交互方式</li>
+</ul>
+
+<h3 id="2-flex-弹性布局">2. Flex 弹性布局</h3>
+
+<p>以天猫的实现方式进行说明：</p>
+
+<p>它的<code class="highlighter-rouge">viewport</code>是固定的：</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"&gt;
 </code></pre>
 </div>
 
-<p>每个插件作为一个包至少有一个或类似于<code class="highlighter-rouge">setup</code>的方法将其和Caddyfile中指明的配置关联起来。</p>
+<p>高度定死，宽度自适应，元素都采用px做单位。</p>
 
-<p>在setup中初始化了一个相应插件的strut，用于编写插件的实际处理流程。</p>
+<p>随着屏幕宽度变化，页面也会跟着变化，效果就和PC页面的流体布局差不多，在哪个宽度需要调整的时候使用响应式布局调调就行（比如网易新闻），这样就实现了『适配』</p>
 
-<p>All in all, caddy是个易于扩展的服务器，但其插件必须在编译期确定，通过配置Caddyfile，可以实现预期内的不停机重启, 但大部分时候不适合作为迭代快速的实际提供服务的服务器。</p>
+<h3 id="3-rem--viewport缩放">3. <code class="highlighter-rouge">rem</code> + <code class="highlighter-rouge">viewport缩放</code></h3>
+
+<p>这也是淘宝使用的方案，根据屏幕宽度设定 <code class="highlighter-rouge">rem</code> 值，需要适配的元素都使用 <code class="highlighter-rouge">rem</code> 为单位，不需要适配的元素还是使用 <code class="highlighter-rouge">px</code> 为单位。</p>
+
+<h4 id="实现原理">实现原理</h4>
+
+<p>根据 <code class="highlighter-rouge">rem</code> 将页面放大 <code class="highlighter-rouge">dpr</code> 倍, 然后 <code class="highlighter-rouge">viewport</code> 设置为<code class="highlighter-rouge"> 1/dpr</code>.</p>
+
+<p>如iphone6 plus的 <code class="highlighter-rouge">dpr</code> 为3, 则页面整体放大3倍, 1px(css单位)在plus下默认为3px(物理像素)
+然后 <code class="highlighter-rouge">viewport</code> 设置为1/3, 这样页面整体缩回原始大小. 从而实现高清。</p>
 
   </section>
 </article>
@@ -167,9 +204,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/06/ruby-invoke-C/" title="link to Ruby 使用 Fiddle 调用 C 函数">Ruby 使用 Fiddle 调用 C 函数</a></h2>
-       <p class="excerpt">写一个c函数// split.cdouble split(double num){  double ret = 0;  ret = num / 2;  return ret;}编译成动态库gcc -o libsplit.so -shared split.c在 split.rb 里调用 libsplit.so 里的 split 函数require 'fiddle'# Open the filelibsplit = Fiddle.dlopen('./libsplit.so')# Load th...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-06-05 21:38:55 +0800" class="post-list__meta--date date">2016-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/06/ruby-invoke-C/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2015/09/wireshark/" title="link to wireshark filter手记">wireshark filter手记</a></h2>
+       <p class="excerpt">ref1ref2display filterexplanation  A capture filter is used to select which packets should be saved to disk while capturing. For capture filters wireshark uses the BPF syntax. BPF is module that runs in the kernel and can therefor maintain high ra...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2015-09-03 16:23:52 +0800" class="post-list__meta--date date">2015-09-03</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/09/wireshark/>继续阅读</a></div>
    </div>
    
    
@@ -177,9 +214,9 @@
    
    <div class="read-more-item">
        <span class="read-more-item-dim">更早的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2016/01/rubyRegExp/" title="link to ruby RegExp">ruby RegExp</a></h2>
-       <p class="excerpt">Ruby对正则表达式支持非常好，所以对我经常使用到的做一个总结，包括Ruby中正则的写法，匹配的方法，替换，分组匹配等。1.Ruby中正则表达式的写法主要有三种  在//之间，要进行转义  在%r{}内，不用进行转义  Regexp.new()内，不用进行转义/mm\/dd/，Regexp.new(“mm/dd”)，%r{mm/dd}三者效果相同，实质都是新建了一个Regexp的类。2.匹配的两种方法=~肯定匹配, !~否定匹配。=~表达式返回匹配到的位置索引，失败返回nil，符号左右内容...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2016-01-07 19:34:12 +0800" class="post-list__meta--date date">2016-01-07</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/01/rubyRegExp/>继续阅读</a></div>
+       <h2 class="post-list__post-title post-title"><a href="/2014/11/inherit/" title="link to inheritance in prototype">inheritance in prototype</a></h2>
+       <p class="excerpt">### 拷贝继承### 类式继承(用new的继承)  function Aaa() {		//父类    this.name='小明';  }  Aaa..prototype.showName = function(first_argument) {    alert(this.name);  };  function Bbb() {		//子类    Aaa.call(this);		//继承父类构造函数里的属性  }  Bbb.prototype = new Aaa();	//实现继承...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/inherit/>继续阅读</a></div>
    </div>
    
 </section>
@@ -190,8 +227,8 @@
     <script>
     
     var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2016/04/caddy-ace/";
-        this.page.identifier = "/2016/04/caddy-ace/";
+        this.page.url = "http://localhost:4000/2015/08/mobile-adapt/";
+        this.page.identifier = "/2015/08/mobile-adapt/";
     };
 
     var disqus_shortname = 'fanyer';
