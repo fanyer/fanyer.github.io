@@ -155,6 +155,27 @@
     </li>
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/12/cache/" title="访问 caches">caches</a></h2>
+      <p class="excerpt">缓存实践对于各种HTTP缓存控制头部的对比以及用户可能出现的浏览器刷新行为，当我们在一个项目上做http缓存的应用时，我们实际上还是会把可能的大多数首部字段均使用上。1. Expires / Cache-ControlExpires用时刻来标识失效时间，不免收到时间同步的影响，而Cache-Control使用时间间隔很好的解决了这个问题。 但是 Cache-Control 是 HTTP1.1 才有的，不适用于 HTTP1.0，而 Expires 既适用于 HTTP1.0，也适用于 HTTP...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-12-18 22:24:49 +0800" class="post-list__meta--date date">2016-12-18</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/12/cache/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/11/face-anxiety/" title="访问 calm down Under anxiety">calm down Under anxiety</a></h2>
+      <p class="excerpt">anxiety diary我本身有一点心率不齐（高考体测得）有些很多未补完的事情，一旦即将deadline, 都会本能地有难以遏制地anxiety。而从前不以为意的items也会一起burst出来, 如果是在家的闲余时间，我会将其转为身体运动来暂时性放逐精神，以免思绪乱飞，譬如弹n个小时的钢琴，或是大学时期的大学城内环4km跑步。身体的运动有抚慰精神的效果。如果是在worktime, 则会开始写文档或是日志， 其实也是一部分的身体movements来comfort自己的精神。这两种办法其实...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-11-02 20:17:52 +0800" class="post-list__meta--date date">2016-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/11/face-anxiety/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/11/ucs2-utf8/" title="访问 ucs2 <=> utf8">ucs2 <=> utf8</a></h2>
+      <p class="excerpt">之前日志里的的 xss,csrf 有利用ucs-2进行安全攻击的说明。有时候需要对其进行utf-8的转换。  Ps： gbk编码转unicode需要查表一般会有流程gbk =&gt; unicode(ucs-2) =&gt; utf-8pass gbk流程ucs-2转utf-8 可以如下实现：function toUtf8(code) {    var iByte = 0;    var i = 0;    result = "";    while (code &gt; 0x7f) { ...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-11-02 20:17:52 +0800" class="post-list__meta--date date">2016-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/11/ucs2-utf8/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2016/10/ruby-metaprogramming/" title="访问 ruby DSL">ruby DSL</a></h2>
       <p class="excerpt">Creating a Ruby DSL归纳笔记借用 Creating a Ruby DSL 这篇文章中的例子，假设我们想写一段 HTML 代码:&lt;html&gt;  &lt;body&gt;    &lt;div id="container"&gt;      &lt;ul class="pretty"&gt;        &lt;li class="active"&gt;Item 1&lt;/li&gt;        &lt;li&gt;Item 2&lt;/li&gt;   ...&hellip;</p>
       <div class="post-list__meta"><time datetime="2016-10-18 20:48:52 +0800" class="post-list__meta--date date">2016-10-18</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/10/ruby-metaprogramming/>继续阅读</a></div>
@@ -182,27 +203,6 @@
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/07/AsyncModule-in-Node/" title="访问 commonjs异步模块">commonjs异步模块</a></h2>
-      <p class="excerpt">如何包装基础性的异步模块，有几种方案：1.包装到对象属性上var Wrapper = function(){  this.foo = "bar";  this.init();};Wrapper.prototype.init = function(){  var wrapper = this;    async.function(function(response) {    wrapper.foo = "foobar";  });}module.exports = new Wrapper(...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2016-07-24 13:48:52 +0800" class="post-list__meta--date date">2016-07-24</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/AsyncModule-in-Node/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/07/metaprograming-in-ruby/" title="访问 某段ruby元编程">某段ruby元编程</a></h2>
-      <p class="excerpt">可以用irb（Ruby的REPL程序）实际运行：class A  [:scope, :show_snippets, :search_results, :search_objects].each do |name|    define_method name do      search      instance_variable_get "@#{name}"    end  end  def search    return if @searched    @scope, @show_s...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2016-07-10 22:48:52 +0800" class="post-list__meta--date date">2016-07-10</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/metaprograming-in-ruby/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2016/06/ruby-invoke-C/" title="访问 Ruby 使用 Fiddle 调用 C 函数">Ruby 使用 Fiddle 调用 C 函数</a></h2>
-      <p class="excerpt">写一个c函数// split.cdouble split(double num){  double ret = 0;  ret = num / 2;  return ret;}编译成动态库gcc -o libsplit.so -shared split.c在 split.rb 里调用 libsplit.so 里的 split 函数require 'fiddle'# Open the filelibsplit = Fiddle.dlopen('./libsplit.so')# Load th...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2016-06-05 21:38:55 +0800" class="post-list__meta--date date">2016-06-05</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/06/ruby-invoke-C/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -221,7 +221,7 @@
             <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-13 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-14 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
         <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
     </footer>
 </section>
