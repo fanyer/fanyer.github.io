@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>caches</title>
+  <meta name="description" content="缓存实践对于各种HTTP缓存控制头部的对比以及用户可能出现的浏览器刷新行为，当我们在一个项目上做http缓存的应用时，我们实际上还是会把可能的大多数首部字段均使用上。1. Expires / Cache-ControlExpires用时刻来标识失效时间，不免收到时间同步的影响，而Cache-Control使用时间...">
+  <meta name="author" content="Wei Wang">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="caches">
+  <meta name="twitter:description" content="缓存实践对于各种HTTP缓存控制头部的对比以及用户可能出现的浏览器刷新行为，当我们在一个项目上做http缓存的应用时，我们实际上还是会把可能的大多数首部字段均使用上。1. Expires / Cache-ControlExpires用时刻来标识失效时间，不免收到时间同步的影响，而Cache-Control使用时间...">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="caches">
+  <meta property="og:description" content="缓存实践对于各种HTTP缓存控制头部的对比以及用户可能出现的浏览器刷新行为，当我们在一个项目上做http缓存的应用时，我们实际上还是会把可能的大多数首部字段均使用上。1. Expires / Cache-ControlExpires用时刻来标识失效时间，不免收到时间同步的影响，而Cache-Control使用时间...">
+  
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
+  <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2016/12/cache/">
+  <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+  
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/#blog" title="前往 fanyer 的主页" class="blog-button"><img src="/assets/images/avatar.jpg" width="80" alt="fanyer logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for fanyer" class="blog-button">fanyer</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">Code, Design, and Things in Between</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        <p class="panel-cover__description">Just Help Yourself</p>
+        
+        
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="Visit blog" class="blog-button">Blog</a></li>
+                
+              </ul>
+            </nav>
+          </div>
+          
+          <div><nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  
+  <!-- Weibo -->
+  <li class="navigation__item">
+    <a href="http://weibo.com/sysu_fanyer" title="@sysu_fanyer 的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+  
+
+  
+  <!-- Github -->
+  <li class="navigation__item">
+    <a href="https://github.com/fanyer" title="@fanyer 的 Github" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+  
+  
+  
+
+  
+
+  <!-- RSS -->
+  <li class="navigation__item">
+    <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+  
+  <!-- Email -->
+  <li class="navigation__item">
+    <a href="mailto:iofanyer@gmail.com" title="Contact me">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+  
+
+  </ul>
+</nav>
+</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-red"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2016-12-18 22:24:49 +0800" itemprop="datePublished" class="post-meta__date date">2016-12-18</time> &#8226; <span class="post-meta__tags tags"></span>
+    </div>
+    <h1 class="post-title">caches</h1>
+  </header>
+
+  <section class="post">
+    <h3 id="缓存实践">缓存实践</h3>
+<p>对于各种HTTP缓存控制头部的对比以及用户可能出现的浏览器刷新行为，当我们在一个项目上做http缓存的应用时，我们实际上还是会把可能的大多数首部字段均使用上。</p>
+<h4 id="1-expires--cache-control">1. Expires / Cache-Control</h4>
+<p>Expires用时刻来标识失效时间，不免收到时间同步的影响，而Cache-Control使用时间间隔很好的解决了这个问题。 但是 Cache-Control 是 HTTP1.1 才有的，不适用于 HTTP1.0，而 Expires 既适用于 HTTP1.0，也适用于 HTTP1.1，所以说在大多数情况下同时发送这两个头会是一个更好的选择，当客户端两种头都能解析的时候，会优先使用 Cache-Control。</p>
+<h4 id="2-last-modified--etag">2. Last-Modified / ETag</h4>
+<p>二者都是通过某个标识值来请求资源， 如果服务器端的资源没有变化，则自动返回 HTTP 304 （Not Changed）状态码，内容为空，这样就节省了传输数据量。而当资源发生比那话后，返回和第一次请求时类似。从而保证不向客户端重复发出资源，也保证当服务器有变化时，客户端能够得到最新的资源。</p>
+
+<p>其中Last-Modified使用文件最后修改作为文件标识值，它无法处理文件一秒内多次修改的情况，而且只要文件修改了哪怕文件实质内容没有修改，也会重新返回资源内容；ETag作为“被请求变量的实体值”，其完全可以解决Last-Modified头部的问题，但是其计算过程需要耗费服务器资源。</p>
+<h4 id="3-from-cache--304">3. from-cache / 304</h4>
+<p>Expires和Cache-Control都有一个问题就是服务端作为的修改，如果还在缓存时效里，那么客户端是不会去请求服务端资源的（非刷新），这就存在一个资源版本不符的问题，而强制刷新一定会发起HTTP请求并返回资源内容，无论该内容在这段时间内是否修改过；而Last-Modified和Etag每次请求资源都会发起请求，哪怕是很久都不会有修改的资源，都至少有一次请求响应的消耗。</p>
+
+<p>对于所有可缓存资源，指定一个Expires或Cache-Control max-age以及一个Last-Modified或ETag至关重要。同时使用前者和后者可以很好的相互适应。</p>
+
+<p>前者不需要每次都发起一次请求来校验资源时效性，后者保证当资源未出现修改的时候不需要重新发送该资源。而在用户的不同刷新页面行为中，二者的结合也能很好的利用HTTP缓存控制特性，无论是在地址栏输入URI然后输入回车进行访问，还是点击刷新按钮，浏览器都能充分利用缓存内容，避免进行不必要的请求与数据传输。</p>
+
+  </section>
+</article>
+
+<section class="read-more">
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">最近的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2017/03/TreeShaking/" title="link to Tree Shaking">Tree Shaking</a></h2>
+       <p class="excerpt">Rich Harris 的模块打包器 Rollup 普及了 JavaScript 圈内一个重要的特性：Tree-shaking，即从模块包中排除未使用的 exports 项。Rollup 基于 ES6 模块的静态结构（引入和导出不会在运行时改变）来检测哪一个模块没有被使用。Webpack 的 Tree-shaking 特性目前正在 beta 阶段，这篇博文解释了它是如何工作的，相关的项目代码可以在 Github 上查看：Tree-shaking Demo。1. Webpack 2 如何消除...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2017-03-23 23:48:52 +0800" class="post-list__meta--date date">2017-03-23</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2017/03/TreeShaking/>继续阅读</a></div>
+   </div>
+   
+   
+   
+   
+   <div class="read-more-item">
+       <span class="read-more-item-dim">更早的文章</span>
+       <h2 class="post-list__post-title post-title"><a href="/2016/11/face-anxiety/" title="link to calm down Under anxiety">calm down Under anxiety</a></h2>
+       <p class="excerpt">anxiety diary我本身有一点心率不齐（高考体测得）有些很多未补完的事情，一旦即将deadline, 都会本能地有难以遏制地anxiety。而从前不以为意的items也会一起burst出来, 如果是在家的闲余时间，我会将其转为身体运动来暂时性放逐精神，以免思绪乱飞，譬如弹n个小时的钢琴，或是大学时期的大学城内环4km跑步。身体的运动有抚慰精神的效果。如果是在worktime, 则会开始写文档或是日志， 其实也是一部分的身体movements来comfort自己的精神。这两种办法其实...&hellip;</p>
+       <div class="post-list__meta"><time datetime="2016-11-02 20:17:52 +0800" class="post-list__meta--date date">2016-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/11/face-anxiety/>继续阅读</a></div>
+   </div>
+   
+</section>
+
+<section class="post-comments">
+  
+    <div id="disqus_thread"></div>
+    <script>
+    
+    var disqus_config = function () {
+        this.page.url = "http://localhost:4000/2016/12/cache/";
+        this.page.identifier = "/2016/12/cache/";
+    };
+
+    var disqus_shortname = 'fanyer';
+    
+    (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
+    
+  
+  
+  
+  
+</section>
+
+
+            <section class="footer">
+    <footer>
+    	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-14 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+    
+  </body>
+
+</html>
