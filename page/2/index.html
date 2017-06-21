@@ -134,6 +134,13 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/08/brew-tap/" title="访问 发布brew个人包">发布brew个人包</a></h2>
+      <p class="excerpt">Mac上的包管理工具，一般都推荐使用homebrew。homebrew开源在github上，其中formula文件夹为brew收录的所有包，目前大概是4000个。但是个人制作的小软件不会被官方仓库的formula收录，homebrew官方留出了tap命令使得我们可以将homebrew-core部署到自己的仓库,这样就可以用brew安装我们指定路径下的可执行文件，并将其安装到/usr/lcoal/bin目录下&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-08-23 21:48:52 +0800" class="post-list__meta--date date">2016-08-23</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/08/brew-tap/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2016/07/AsyncModule-in-Node/" title="访问 commonjs异步模块">commonjs异步模块</a></h2>
       <p class="excerpt">如何包装基础性的异步模块，有几种方案：1.包装到对象属性上var Wrapper = function(){  this.foo = "bar";  this.init();};Wrapper.prototype.init = function(){  var wrapper = this;    async.function(function(response) {    wrapper.foo = "foobar";  });}module.exports = new Wrapper(...&hellip;</p>
       <div class="post-list__meta"><time datetime="2016-07-24 13:48:52 +0800" class="post-list__meta--date date">2016-07-24</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/07/AsyncModule-in-Node/>继续阅读</a></div>
@@ -196,13 +203,6 @@
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2015/11/EloquentRuby-notes/" title="访问 Eloquent Ruby (Chapter 1) 手记">Eloquent Ruby (Chapter 1) 手记</a></h2>
-      <p class="excerpt">1. 代码的优美从缩进开始：Ruby的代码缩进约定： 2个空格。 只用2个空格。2. Go Easy on the Comments注释的时候悠着点儿Ruby的注释很简单：#符号后面的任何代码都是注释。但是真正的问题是：什么时候该注释，多少注释才够？好的Ruby代码是不需要去写注释的。代码应该能够自己解释自己。当需要注释的时候，最好去解释，这些代码如何去用就够了。而不是你为什么要写它，以及它的算法，或者是你如何使它越来越快。只需要告诉我们，如何去用，能记住下面注释例子就更好了：# Clas...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2015-11-24 20:48:52 +0800" class="post-list__meta--date date">2015-11-24</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/EloquentRuby-notes/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -223,7 +223,7 @@
             <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-14 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-21 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
         <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
     </footer>
 </section>

@@ -5,9 +5,137 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Jun 2017 15:45:29 +0800</pubDate>
-    <lastBuildDate>Wed, 14 Jun 2017 15:45:29 +0800</lastBuildDate>
+    <pubDate>Wed, 21 Jun 2017 11:34:44 +0800</pubDate>
+    <lastBuildDate>Wed, 21 Jun 2017 11:34:44 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
+    
+      <item>
+        <title>Node event loop 扒皮</title>
+        <description>&lt;p&gt;时间循环的流程如下&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;┌───────────────────────┐
+┌─&amp;gt;│        timers         │
+│  └──────────┬────────────┘
+│  ┌──────────┴────────────┐
+│  │     I/O callbacks     │
+│  └──────────┬────────────┘
+│  ┌──────────┴────────────┐
+│  │     idle, prepare     │
+│  └──────────┬────────────┘      ┌───────────────┐
+│  ┌──────────┴────────────┐      │   incoming:   │
+│  │         poll          │&amp;lt;─────┤  connections, │
+│  └──────────┬────────────┘      │   data, etc.  │
+│  ┌──────────┴────────────┐      └───────────────┘
+│  │        check          │
+│  └──────────┬────────────┘
+│  ┌──────────┴────────────┐
+└──┤    close callbacks    │
+└───────────────────────┘
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;每个phase都维持着一个FIFO的回调函数队列。&lt;/p&gt;
+
+&lt;h3 id=&quot;phases&quot;&gt;Phases&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;timers&lt;/code&gt;: this phase executes callbacks scheduled by setTimeout() and setInterval().&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;I/O callbacks&lt;/code&gt;: executes almost all callbacks with the exception of close callbacks, the ones scheduled by timers, and setImmediate().&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;idle&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;prepare&lt;/code&gt;: only used internally.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;poll&lt;/code&gt;: retrieve new I/O events; node will block here when appropriate.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;check&lt;/code&gt;: setImmediate() callbacks are invoked here.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;close callbacks&lt;/code&gt;: e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;socket.on('close', ...)&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;timer&quot;&gt;timer&lt;/h4&gt;
+&lt;p&gt;Technically, the &lt;code class=&quot;highlighter-rouge&quot;&gt;poll&lt;/code&gt; phase controls when timers are executed.&lt;/p&gt;
+
+&lt;h4 id=&quot;i0-callbacks&quot;&gt;I/0 callbacks&lt;/h4&gt;
+
+&lt;p&gt;执行一些系统操作的回调函数，如TCP错误类型。&lt;/p&gt;
+
+&lt;p&gt;eg：当尝试连接时，如果一个TCP套接字收到了&lt;code class=&quot;highlighter-rouge&quot;&gt;ECONNREFUSED&lt;/code&gt;， 一些linux系统可能希望等待错误报告。这将会在本阶段内入队等待执行。&lt;/p&gt;
+
+&lt;h4 id=&quot;poll&quot;&gt;poll&lt;/h4&gt;
+
+&lt;p&gt;本阶段有两个主要功能：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;执行队列里已到期的timer，然后&lt;/li&gt;
+  &lt;li&gt;处理poll队列里的事件&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果没有timer调度，将会发生以下两种之一：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;如果poll队列不为空，则继续同步迭代器队列内的回调函数直到exhausted或是达到系统硬性限制。&lt;/li&gt;
+  &lt;li&gt;如果poll队列为空， 将会发生以下两种之一。
+    &lt;ul&gt;
+      &lt;li&gt;如果脚本被&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;调度，时间循环将会结束&lt;code class=&quot;highlighter-rouge&quot;&gt;poll&lt;/code&gt;阶段并进入&lt;code class=&quot;highlighter-rouge&quot;&gt;check&lt;/code&gt;阶段执行被调度的脚本。&lt;/li&gt;
+      &lt;li&gt;如果脚本不是被&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;调度，事件循环将会等待回调函数加入队列，然后即时之行之。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;一旦poll队列为空，时间循环会检查到达threshold的timers。如果一个或多个timer ready了，时间循环将会包装会timer阶段执行timer的回调函数。&lt;/p&gt;
+
+&lt;h4 id=&quot;check&quot;&gt;check&lt;/h4&gt;
+
+&lt;p&gt;本阶段允许在poll阶段结束后立即执行callbacks。如果poll阶段转为idle并且被setImmediate()入队，时间循环将直接进入&lt;code class=&quot;highlighter-rouge&quot;&gt;check&lt;/code&gt;阶段而不是等待&lt;code class=&quot;highlighter-rouge&quot;&gt;poll&lt;/code&gt;事件。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;实际上是在事件循环中一个单独的阶段运行的一个特殊的timer。使用一个&lt;code class=&quot;highlighter-rouge&quot;&gt;libuv&lt;/code&gt;的api来调度在poll阶段完成之后的callbacks的执行&lt;/p&gt;
+
+&lt;p&gt;通常来说，在代码执行过程中，事件循环将最终hit到poll阶段（poll阶段也会等待for incoming connection, request，etc）。但如果一个callback被&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;调度并且poll阶段变为idle，it（poll）将直接结束并进入check阶段而非等待poll事件。&lt;/p&gt;
+
+&lt;h4 id=&quot;close-callbacks&quot;&gt;close callbacks&lt;/h4&gt;
+
+&lt;p&gt;如果一个socket或是handle被突然关闭(e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;socket.destroy()&lt;/code&gt;),&lt;code class=&quot;highlighter-rouge&quot;&gt;close&lt;/code&gt;事件将会被emit到本阶段。其他情况将会被emit到&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;。&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h4 id=&quot;setimmediate--vs-settimeout&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;  vs &lt;code class=&quot;highlighter-rouge&quot;&gt;setTimeout()&lt;/code&gt;&lt;/h4&gt;
+&lt;p&gt;这两者很相似，但是行为表现不同 depend on 何时调用。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;被设计为在当前poll阶段完成时执行&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;setTimeout()&lt;/code&gt;调度一段脚本在达到minimum的threshold时执行&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;over&lt;code class=&quot;highlighter-rouge&quot;&gt;setTimeout()&lt;/code&gt;的最主要优点在于：
+&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;的执行顺序比任何在&lt;code class=&quot;highlighter-rouge&quot;&gt;I/O&lt;/code&gt;阶段调度的timer高。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;processnexttick&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;任何时候你都可以在一个给定的阶段里调用&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;,所有传入&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;的callbacks都会在事件循环continue前resolved.这可以创建一些很不好的解决方案，因为你可以利用递归&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;手动starve将你的&lt;code class=&quot;highlighter-rouge&quot;&gt;I/O&lt;/code&gt;,这种做法将防止事件循环进入poll阶段。&lt;/p&gt;
+
+&lt;h4 id=&quot;processnexttick-vs-setimmediate&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt; vs &lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;在本阶段立即解除&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate()&lt;/code&gt;事件循环中的接下来的iteration或是&lt;code class=&quot;highlighter-rouge&quot;&gt;tick&lt;/code&gt;中解除&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;why-use-processnexttick&quot;&gt;Why use &lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick()&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;有两个主要原因：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;允许使用者处理错误，清初任何不必要的资源，或是可能在下次事件循环时尝试再次请求&lt;/li&gt;
+  &lt;li&gt;在下次事件循环前，有时候有必要在调用栈释放后，允许一个callback执行&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ps:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;如果可能的话，调用setTimeout时，尽量使用相同的超时值&lt;/li&gt;
+  &lt;li&gt;尽量用process.nextTick 来代替 setTimeout(fn ,0)&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Mon, 19 Jun 2017 21:28:32 +0800</pubDate>
+        <link>http://localhost:4000/2017/06/node8-eventloop/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/06/node8-eventloop/</guid>
+        
+        <category>event</category>
+        
+        <category>loop</category>
+        
+        
+      </item>
     
       <item>
         <title>Mybatis explore for taste</title>
@@ -576,23 +704,6 @@ buf := Read(new([]byte, 4096))
         <pubDate>Wed, 07 Sep 2016 23:48:52 +0800</pubDate>
         <link>http://localhost:4000/2016/09/go-make-new/</link>
         <guid isPermaLink="true">http://localhost:4000/2016/09/go-make-new/</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>update</category>
-        
-      </item>
-    
-      <item>
-        <title>发布brew个人包</title>
-        <description>&lt;p&gt;Mac上的包管理工具，一般都推荐使用homebrew。homebrew开源在github上，其中formula文件夹为brew收录的所有包，目前大概是4000个。&lt;/p&gt;
-
-&lt;p&gt;但是个人制作的小软件不会被官方仓库的formula收录，homebrew官方留出了tap命令使得我们可以将homebrew-core部署到自己的仓库,这样就可以用brew安装我们指定路径下的可执行文件，并将其安装到/usr/lcoal/bin目录下&lt;/p&gt;
-</description>
-        <pubDate>Tue, 23 Aug 2016 21:48:52 +0800</pubDate>
-        <link>http://localhost:4000/2016/08/brew-tap/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/08/brew-tap/</guid>
         
         
         <category>jekyll</category>
