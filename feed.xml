@@ -5,8 +5,8 @@
     <description></description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 21 Jun 2017 11:34:44 +0800</pubDate>
-    <lastBuildDate>Wed, 21 Jun 2017 11:34:44 +0800</lastBuildDate>
+    <pubDate>Thu, 22 Jun 2017 16:30:03 +0800</pubDate>
+    <lastBuildDate>Thu, 22 Jun 2017 16:30:03 +0800</lastBuildDate>
     <generator>Jekyll v3.4.0</generator>
     
       <item>
@@ -317,6 +317,117 @@ elem.innerHTML = `Output: ${foo()}`;
       </item>
     
       <item>
+        <title>specs of Promise/A+</title>
+        <description>&lt;h2 id=&quot;promisea规范&quot;&gt;Promise/A+规范&lt;/h2&gt;
+
+&lt;p&gt;摘录promise.then相关的部分如下：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;promise.then(onFulfilled, onRejected)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;2.2.4 onFulfilled or onRejected must not be called until the execution context stack contains only platform code. [3.1].&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Here “platform code” means engine, environment, and promise implementation code. In practice, this requirement ensures that onFulfilled and onRejected execute asynchronously, after the event loop turn in which then is called, and with a fresh stack. This can be implemented with either a “macro-task” mechanism such as setTimeout or setImmediate, or with a “micro-task” mechanism such as MutationObserver or process.nextTick. Since the promise implementation is considered platform code, it may itself contain a task-scheduling queue or “trampoline” in which the handlers are called.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;规范要求，&lt;code class=&quot;highlighter-rouge&quot;&gt;onFulfilled&lt;/code&gt; 必须在 执行上下文栈（execution context stack） 只包含 平台代码（platform code） 后才能执行。平台代码指 引擎，环境，Promise实现代码。实践上来说，这个要求保证了&lt;code class=&quot;highlighter-rouge&quot;&gt;onFulfilled&lt;/code&gt;的异步执行（以全新的栈），在then被调用的这个事件循环之后。&lt;/p&gt;
+
+&lt;p&gt;规范的实现可以通过 macro-task 机制，比如&lt;code class=&quot;highlighter-rouge&quot;&gt;setTimeout&lt;/code&gt;和 &lt;code class=&quot;highlighter-rouge&quot;&gt;setImmediate&lt;/code&gt;，或者 micro-task 机制，比如 &lt;code class=&quot;highlighter-rouge&quot;&gt;MutationObserver&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;process.nextTick&lt;/code&gt; 。因为promise的实现被认为是平台代码，所以可以自己包涵一个task-scheduling队列或者trampoline。&lt;/p&gt;
+
+&lt;p&gt;通过对规范的翻译和解读，我们可以确定的是promise.then是异步的，但它的实现又是平台相关的。要继续解答我们的疑问，必须理解下面几个概念：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Event Loop，应该算是一个前置的概念，理解它才能理解浏览器的异步工作流程。&lt;/li&gt;
+  &lt;li&gt;macro-task 机制和 micro-task 机制，这组概念很新，之前根本没听过，但却是解决问题的核心。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;event-loop规范&quot;&gt;Event Loop规范&lt;/h3&gt;
+
+&lt;p&gt;HTML5规范里有Event loops这一章节（读起来比较晦涩，只关注相关部分即可）。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;每个浏览器环境，至多有一个event loop。&lt;/li&gt;
+  &lt;li&gt;一个event loop可以有1个或多个task queue。&lt;/li&gt;
+  &lt;li&gt;一个task queue是一列有序的task，用来做以下工作：Events task，Parsing task， Callbacks task， Using a resource task， Reacting to DOM manipulation task等。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;每个task都有自己相关的document，比如一个task在某个element的上下文中进入队列，那么的document就是这个element的document。&lt;/p&gt;
+
+&lt;p&gt;每个task定义时都有一个task source，从同一个task source来的task必须放到同一个task queue，从不同源来的则被添加到不同队列。&lt;/p&gt;
+
+&lt;p&gt;每个(task source对应的)task queue都保证自己队列的先进先出的执行顺序，但event loop的每个turn，是由浏览器决定从哪个task source挑选task。这允许浏览器为不同的task source设置不同的优先级，比如为用户交互设置更高优先级来使用户感觉流畅。&lt;/p&gt;
+
+&lt;h3 id=&quot;jobs-and-job-queues规范&quot;&gt;Jobs and Job Queues规范&lt;/h3&gt;
+
+&lt;p&gt;本来应该接着上面Event Loop的话题继续深入，讲macro-task和micro-task，但先不急，我们跳到ES2015规范，看看Jobs and Job Queues这一新增的概念，它有点类似于上面提到的task queue。&lt;/p&gt;
+
+&lt;p&gt;一个Job Queue是一个先进先出的队列。一个ECMAScript实现必须至少包含以下两个Job Queue：&lt;/p&gt;
+
+&lt;p&gt;| Name	| Purpose|
+| ——–   |   :—-: |
+|ScriptJobs |	Jobs that validate and evaluate ECMAScript Script and Module source text. See clauses 10 and 15.|
+|PromiseJobs	Jobs | that are responses to the settlement of a Promise (see 25.4).|
+单个Job Queue中的PendingJob总是按序（先进先出）执行，但多个Job Queue可能会交错执行。&lt;/p&gt;
+
+&lt;p&gt;跟随PromiseJobs到25.4章节，可以看到PerformPromiseThen ( promise, onFulfilled, onRejected, resultCapability )：&lt;/p&gt;
+
+&lt;p&gt;这里我们看到，promise.then的执行其实是向PromiseJobs添加Job。&lt;/p&gt;
+
+&lt;h3 id=&quot;event-loop怎么处理tasks和microtasks&quot;&gt;event loop怎么处理tasks和microtasks?&lt;/h3&gt;
+
+&lt;p&gt;好了，现在可以让我们真正来深入task（macro-task）和micro-task。&lt;/p&gt;
+
+&lt;p&gt;认真说，规范并没有包括macro-task 和 micro-task这部分概念的描述，但阅读一些大神的博文以及从规范相关概念推测，以下所提到的在我看来，是合理的解释。但是请看文章的同学辩证和批判地看。&lt;/p&gt;
+
+&lt;p&gt;首先，&lt;code class=&quot;highlighter-rouge&quot;&gt;micro-task&lt;/code&gt; 在ES2015规范中称为 &lt;code class=&quot;highlighter-rouge&quot;&gt;Job&lt;/code&gt; 。 其次，&lt;code class=&quot;highlighter-rouge&quot;&gt;macro-task&lt;/code&gt; 代指&lt;code class=&quot;highlighter-rouge&quot;&gt;task&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;哇，所以我们可以结合前面的规范，来讲一讲Event Loop（事件循环）是怎么来处理task和 microtask 的了。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;每个线程有自己的事件循环，所以每个web worker有自己的，所以它才可以独立执行。然而，所有同属一个origin的windows共享一个事件循环，所以它们可以同步交流。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;事件循环不间断在跑，执行任何进入队列的task。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个事件循环可以有多个task source，每个task source保证自己的任务列表的执行顺序，但由浏览器在（事件循环的）每轮中挑选某个task source的task。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;tasks are scheduled，所以浏览器可以从内部到JS/DOM，保证动作按序发生。在tasks之间，浏览器可能会render updates。从鼠标点击到事件回调需要schedule task，解析html，setTimeout这些都需要。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;microtasks are scheduled，经常是为需要直接在当前脚本执行完后立即发生的事，比如async某些动作但不必承担新开task的弊端。microtask queue在回调之后执行，只要没有其它JS在执行中，并且在每个task的结尾。microtask中添加的microtask也被添加到microtask queue的末尾并处理。microtask包括mutation observer callbacks和promise callbacks。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Sun, 22 Jan 2017 22:38:17 +0800</pubDate>
+        <link>http://localhost:4000/2017/01/promise-A+/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/01/promise-A+/</guid>
+        
+        <category>webgl</category>
+        
+        <category>canvas</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Canvas Profile</title>
+        <description>
+</description>
+        <pubDate>Sun, 22 Jan 2017 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2017/01/canvas-profile/</link>
+        <guid isPermaLink="true">http://localhost:4000/2017/01/canvas-profile/</guid>
+        
+        
+      </item>
+    
+      <item>
         <title>caches</title>
         <description>&lt;h3 id=&quot;缓存实践&quot;&gt;缓存实践&lt;/h3&gt;
 &lt;p&gt;对于各种HTTP缓存控制头部的对比以及用户可能出现的浏览器刷新行为，当我们在一个项目上做http缓存的应用时，我们实际上还是会把可能的大多数首部字段均使用上。&lt;/p&gt;
@@ -523,187 +634,6 @@ end
         <pubDate>Tue, 18 Oct 2016 20:48:52 +0800</pubDate>
         <link>http://localhost:4000/2016/10/ruby-metaprogramming/</link>
         <guid isPermaLink="true">http://localhost:4000/2016/10/ruby-metaprogramming/</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>update</category>
-        
-      </item>
-    
-      <item>
-        <title>ruby 元编程  method_missing send</title>
-        <description>&lt;ul&gt;
-  &lt;li&gt;method_missing，顾名思义，在方法找不到时被调用。有了这个强大元编程工具，我们就能创建动态的方法，比如ActiveRecord中的动态finder&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;class Legislator
-  # Pretend this is a real implementation
-  def find(conditions = {})
-  end
-
-  # Define on self, since it's  a class method
-  def self.method_missing(method_sym, *arguments, &amp;amp;block)
-    # the first argument is a Symbol, so you need to_s it if you want to pattern match
-    if method_sym.to_s =~ /^find_by_(.*)$/
-      find($1.to_sym =&amp;gt; arguments.first)
-    else
-      super
-    end
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;send，也是一个动态方法调用的强大工具，它的作用的将一个方法以参数的形式传递给对象。
-```
-class Box
-def open_1
-  puts “open box”
-end&lt;/p&gt;
-
-    &lt;p&gt;def open_2
-  puts “open lock and open box”
-end&lt;/p&gt;
-
-    &lt;p&gt;def open_3
-  puts “It’s a open box”
-end&lt;/p&gt;
-
-    &lt;p&gt;def open_4
-  puts “I can’t open box”
-end&lt;/p&gt;
-
-    &lt;p&gt;def open_5
-  puts “Oh shit box!”
-end
-end&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;box = Box.new&lt;/p&gt;
-
-&lt;p&gt;box.send(“open_#{num}”)
-```&lt;/p&gt;
-</description>
-        <pubDate>Sun, 25 Sep 2016 20:48:52 +0800</pubDate>
-        <link>http://localhost:4000/2016/09/ruby-methodMissing-send/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/09/ruby-methodMissing-send/</guid>
-        
-        
-        <category>jekyll</category>
-        
-        <category>update</category>
-        
-      </item>
-    
-      <item>
-        <title>Go 里的 make 和 new 两个函数，how to use？</title>
-        <description>&lt;blockquote&gt;
-  &lt;p&gt;注：该文作者是 &lt;a href=&quot;http://dave.cheney.net/&quot;&gt;Dave Cheney&lt;/a&gt;，原文地址 &lt;a href=&quot;http://dave.cheney.net/2014/08/17/go-has-both-make-and-new-functions-what-gives&quot;&gt;Go has both make and new functions, what gives ?&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;这篇博客主要是讨论 Go 的内建函数 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;如 Rob Pike 在今年的 Gophercon 上提到的，Go 有多种方式初始化变量。其中之一的能力就是获取一个 struct literal 的地址，这导致了几种方式做同样的事情。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;s := &amp;amp;SomeStruct{}
-v := SomeStruct{}
-s := &amp;amp;v              // identical
-s := new(SomeStruct) // also identical
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;评论家指出，这种语言中的冗余是公平的，这有时会导致他们寻找其他的矛盾， &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 之间的冗余最明显。&lt;/p&gt;
-
-&lt;p&gt;表面上 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 做着相同的事情，那究竟是什么原因两个都有呢？&lt;/p&gt;
-
-&lt;h2 id=&quot;为什么不可以使用-make-做一切事情&quot;&gt;为什么不可以使用 make 做一切事情？&lt;/h2&gt;
-
-&lt;p&gt;Go 没有用户定义的泛型，但是它有一些内建的类型，可以操作如通用的  lists，maps， sets， 和 queues；  slices， maps 和 channels。&lt;/p&gt;
-
-&lt;p&gt;因为 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 是被设计成创建这三个内建的泛型，它必须由运行时提供，因为在 Go 中没有办法直接表达 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 的函数签名。&lt;/p&gt;
-
-&lt;p&gt;尽管 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 创建了通用的  slice，map， 和 channel 值，他们依然只是常规的值；&lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 不会返回指针类型的值。&lt;/p&gt;
-
-&lt;p&gt;如果 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 被移除了，支持 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt;，你将如何构建一个指针初始化值。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var x1 *int
-var x2 = new(int)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;p&gt;x1 和 x2 有相同的类型，*int， x2 指向初始化的内存并且可以安全的解除引用。对于 x1 ，同样不是真的。&lt;/p&gt;
-
-&lt;h2 id=&quot;为什么不可以使用-new-做一切事情&quot;&gt;为什么不可以使用 new 做一切事情？&lt;/h2&gt;
-
-&lt;p&gt;尽管 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 的使用是稀少的，其行为是指定好的。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;new(T)&lt;/code&gt; 一直返回一个 &lt;code class=&quot;highlighter-rouge&quot;&gt;*T&lt;/code&gt; 指向一个初始化的 &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt;，正如 Go 没有构造器，这值将被初始化成 &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; 的 &lt;a href=&quot;http://dave.cheney.net/2013/01/19/what-is-the-zero-value-and-why-is-it-useful&quot;&gt;zero value&lt;/a&gt;（讲解了为什么值是零，以及它为什么有用）。&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 来构造一个指向一个 slice，map，或是 channel zero 值的指针并和 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 的行为一致。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;s := new([]string)
-fmt.Println(len(*s))  // 0
-fmt.Println(*s == nil) // true
-
-m := new(map[string]int)
-fmt.Println(m == nil) // false
-fmt.Println(*m == nil) // true
-
-c := new(chan int)
-fmt.Println(c == nil) // false
-fmt.Println(*c == nil) // true
-&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;确实但这些只是规则我们可以改变它们对吧&quot;&gt;确实，但这些只是规则，我们可以改变它们，对吧？&lt;/h2&gt;
-
-&lt;p&gt;它们可能会导致混乱，&lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 是一致的；&lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 仅仅 make slices， maps， 和 channels，&lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 仅仅返回初始化内存的指针。&lt;/p&gt;
-
-&lt;p&gt;是的， &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 可以被扩展成像 &lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 样操作 slices， maps 和 channels，但这将会导致它自己的不一致性。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 将有特殊的表现，如果传递给 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 的类型是 slices， maps 和 channels。这是每一个 Go 程序员应该记得的。&lt;/li&gt;
-  &lt;li&gt;对于 slices 和 channels，&lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 将变成可变参数，采取可能的长度，buffer size 或是 capacity。在比较特殊的情况下一定要记住，然后之前 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 只有一个参数，一个类型。&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 一直返回一个 *T 的 T 传递给它，这意味着像代码：&lt;/p&gt;
-
-    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;func Read(buf []byte) []byte
-// assume new takes an optional length
-buf := Read(new([]byte, 4096))
-&lt;/code&gt;&lt;/pre&gt;
-    &lt;/div&gt;
-
-    &lt;p&gt;需要语法更特殊的情况下允许 *new([]byte, length) 将变得不再可能。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;make&lt;/code&gt; 和 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 做不同的事情。&lt;/p&gt;
-
-&lt;p&gt;如果你从其他语言转移过来，特别是有构造器的语言，那 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt; 应该就是你需要的。但是 Go 不是这些语言，它没有构造器。&lt;/p&gt;
-
-&lt;p&gt;我的建议的谨慎的使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt;。几乎总是有更容易和更清洁的方式来&lt;a href=&quot;http://dave.cheney.net/2014/05/24/on-declaring-variables&quot;&gt;写你的程序&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;作为一个代码评审者，使用 &lt;code class=&quot;highlighter-rouge&quot;&gt;new&lt;/code&gt;，就像使用命名返回参数，这是一个信号，表明代码正在尝试更聪明的做一些事情，我需要特别注意。可能是代码真的是聪明,但更有可能，它可以被更清晰和更地道的重写。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;涉及的文章&lt;/strong&gt;：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;http://dave.cheney.net/2013/01/19/what-is-the-zero-value-and-why-is-it-useful&quot;&gt;What is the zero value, and why is it useful ?&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://dave.cheney.net/2014/03/25/the-empty-struct&quot;&gt;The empty struct&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://dave.cheney.net/2014/03/17/pointers-in-go&quot;&gt;Pointers in Go&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://dave.cheney.net/2014/03/19/channel-axioms&quot;&gt;Channel Axioms&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-</description>
-        <pubDate>Wed, 07 Sep 2016 23:48:52 +0800</pubDate>
-        <link>http://localhost:4000/2016/09/go-make-new/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/09/go-make-new/</guid>
         
         
         <category>jekyll</category>

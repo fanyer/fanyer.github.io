@@ -134,6 +134,20 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2015/12/escape/" title="访问 xss csrf 捋之(2)  some转义for抗xss">xss csrf 捋之(2)  some转义for抗xss</a></h2>
+      <p class="excerpt">1.任何js runtime的解决方案XML HTML字符实体var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []       for (var a in obj) arr.push(a)    return arr}var invert = function(obj) {    obj = Object(obj)    var result = {}    for (var a in ...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-12-06 16:48:52 +0800" class="post-list__meta--date date">2015-12-06</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/12/escape/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2015/11/security/" title="访问 xss csrf 捋之">xss csrf 捋之</a></h2>
+      <p class="excerpt">XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。  XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/security/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2015/11/EloquentRuby-notes/" title="访问 Eloquent Ruby (Chapter 1) 手记">Eloquent Ruby (Chapter 1) 手记</a></h2>
       <p class="excerpt">1. 代码的优美从缩进开始：Ruby的代码缩进约定： 2个空格。 只用2个空格。2. Go Easy on the Comments注释的时候悠着点儿Ruby的注释很简单：#符号后面的任何代码都是注释。但是真正的问题是：什么时候该注释，多少注释才够？好的Ruby代码是不需要去写注释的。代码应该能够自己解释自己。当需要注释的时候，最好去解释，这些代码如何去用就够了。而不是你为什么要写它，以及它的算法，或者是你如何使它越来越快。只需要告诉我们，如何去用，能记住下面注释例子就更好了：# Clas...&hellip;</p>
       <div class="post-list__meta"><time datetime="2015-11-24 20:48:52 +0800" class="post-list__meta--date date">2015-11-24</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/EloquentRuby-notes/>继续阅读</a></div>
@@ -144,6 +158,13 @@
       <h2 class="post-list__post-title post-title"><a href="/2015/11/iterator/" title="访问 es6 迭代器">es6 迭代器</a></h2>
       <p class="excerpt">The iterable protocolThe iterable protocol allows JavaScript objects to define or customize their iteration behavior, such as what values are looped over in a for..of construct. Some built-in types are built-in iterables with a default iteration b...&hellip;</p>
       <div class="post-list__meta"><time datetime="2015-11-03 13:48:52 +0800" class="post-list__meta--date date">2015-11-03</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/iterator/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2015/10/dom-tree-render-tree/" title="访问 Dom Tree & Render Tree">Dom Tree & Render Tree</a></h2>
+      <p class="excerpt">&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-10-17 22:38:17 +0800" class="post-list__meta--date date">2015-10-17</time> &#8226; <span class="post-list__meta--tags tags">webglcanvas</span><a class="btn-border-small" href=/2015/10/dom-tree-render-tree/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
@@ -169,16 +190,16 @@
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2014/11/js-Array-unique/" title="访问 array unique">array unique</a></h2>
-      <p class="excerpt">数组去重的算法有很多，主要分类三类：      直接去重：时间复杂度 O(n²)　　这个方法没啥好介绍的，就是遍历到元素时候再遍历检测是否是重复，由于有两层嵌套的遍历，所以它的性能不高，不过它对数据本身的影响是最小的。        排序去重 ：时间复杂度 O(nlogn)　　先对数组做一次排序，然后遍历数组时相同元素都在邻近的位置，一次遍历就可以搞定。但是需要考虑一个问题，对象是可能无法比较大小的。这个算法那也许在C++之类的语言中可以很容易使用，但由于JavaScript无法直接取到对...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/js-Array-unique/>继续阅读</a></div>
+      <h2 class="post-list__post-title post-title"><a href="/2015/07/some-git/" title="访问 some git">some git</a></h2>
+      <p class="excerpt">  Here is an illustration, by Jon Loeliger. Both commit nodes B and C are parents of commit node A. Parent commits are ordered left-to-right.G   H   I   J \ /     \ /  D   E   F   \  |  / \    \ | /   |     \|/    |      B     C       \   /       ...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2015-07-22 20:58:12 +0800" class="post-list__meta--date date">2015-07-22</time> &#8226; <span class="post-list__meta--tags tags">git</span><a class="btn-border-small" href=/2015/07/some-git/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
     <li>
-      <h2 class="post-list__post-title post-title"><a href="/2014/11/inherit/" title="访问 inheritance in prototype">inheritance in prototype</a></h2>
-      <p class="excerpt">### 拷贝继承### 类式继承(用new的继承)  function Aaa() {		//父类    this.name='小明';  }  Aaa..prototype.showName = function(first_argument) {    alert(this.name);  };  function Bbb() {		//子类    Aaa.call(this);		//继承父类构造函数里的属性  }  Bbb.prototype = new Aaa();	//实现继承...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/inherit/>继续阅读</a></div>
+      <h2 class="post-list__post-title post-title"><a href="/2014/11/js-Array-unique/" title="访问 array unique">array unique</a></h2>
+      <p class="excerpt">数组去重的算法有很多，主要分类三类：      直接去重：时间复杂度 O(n²)　　这个方法没啥好介绍的，就是遍历到元素时候再遍历检测是否是重复，由于有两层嵌套的遍历，所以它的性能不高，不过它对数据本身的影响是最小的。        排序去重 ：时间复杂度 O(nlogn)　　先对数组做一次排序，然后遍历数组时相同元素都在邻近的位置，一次遍历就可以搞定。但是需要考虑一个问题，对象是可能无法比较大小的。这个算法那也许在C++之类的语言中可以很容易使用，但由于JavaScript无法直接取到对...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/js-Array-unique/>继续阅读</a></div>
       <hr class="post-list__divider" />
     </li>
     
@@ -190,7 +211,9 @@
     
         <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/page/2/#blog">&larr; 最近</a>
     
-    <span class="pagination__page-number">3 / 3</span>
+    <span class="pagination__page-number">3 / 4</span>
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/4/#blog">更早 &rarr;</a>
     
 </nav>
 
@@ -200,7 +223,7 @@
             <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-21 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-22 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
         <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
     </footer>
 </section>

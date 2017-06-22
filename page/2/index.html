@@ -134,6 +134,20 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/09/ruby-methodMissing-send/" title="访问 ruby 元编程  method_missing send">ruby 元编程  method_missing send</a></h2>
+      <p class="excerpt">  method_missing，顾名思义，在方法找不到时被调用。有了这个强大元编程工具，我们就能创建动态的方法，比如ActiveRecord中的动态finderclass Legislator  # Pretend this is a real implementation  def find(conditions = {})  end  # Define on self, since it's  a class method  def self.method_missing(metho...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-09-25 20:48:52 +0800" class="post-list__meta--date date">2016-09-25</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/09/ruby-methodMissing-send/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2016/09/go-make-new/" title="访问 Go 里的 make 和 new 两个函数，how to use？">Go 里的 make 和 new 两个函数，how to use？</a></h2>
+      <p class="excerpt">  注：该文作者是 Dave Cheney，原文地址 Go has both make and new functions, what gives ?这篇博客主要是讨论 Go 的内建函数 make 和 new。如 Rob Pike 在今年的 Gophercon 上提到的，Go 有多种方式初始化变量。其中之一的能力就是获取一个 struct literal 的地址，这导致了几种方式做同样的事情。s := &amp;SomeStruct{}v := SomeStruct{}s := &amp;...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2016-09-07 23:48:52 +0800" class="post-list__meta--date date">2016-09-07</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/09/go-make-new/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2016/08/brew-tap/" title="访问 发布brew个人包">发布brew个人包</a></h2>
       <p class="excerpt">Mac上的包管理工具，一般都推荐使用homebrew。homebrew开源在github上，其中formula文件夹为brew收录的所有包，目前大概是4000个。但是个人制作的小软件不会被官方仓库的formula收录，homebrew官方留出了tap命令使得我们可以将homebrew-core部署到自己的仓库,这样就可以用brew安装我们指定路径下的可执行文件，并将其安装到/usr/lcoal/bin目录下&hellip;</p>
       <div class="post-list__meta"><time datetime="2016-08-23 21:48:52 +0800" class="post-list__meta--date date">2016-08-23</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2016/08/brew-tap/>继续阅读</a></div>
@@ -189,20 +203,6 @@
       <hr class="post-list__divider" />
     </li>
     
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2015/12/escape/" title="访问 xss csrf 捋之(2)  some转义for抗xss">xss csrf 捋之(2)  some转义for抗xss</a></h2>
-      <p class="excerpt">1.任何js runtime的解决方案XML HTML字符实体var keys = Object.keys || function(obj) {    obj = Object(obj)    var arr = []       for (var a in obj) arr.push(a)    return arr}var invert = function(obj) {    obj = Object(obj)    var result = {}    for (var a in ...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2015-12-06 16:48:52 +0800" class="post-list__meta--date date">2015-12-06</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/12/escape/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2015/11/security/" title="访问 xss csrf 捋之">xss csrf 捋之</a></h2>
-      <p class="excerpt">XSS： 通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS！CSRF：又称XSRF，冒充用户发起请求（在用户不知情的情况下）,完成一些违背用户意愿的请求（如恶意发帖，删帖，改密码，发邮件等）。  XSS与CSRF的区别，虽然这两个关键词时常抱团出现，但他们两个是不同维度的东西（或者说他们的目的是不一样的）。 XSS更偏向于方法论，CSRF更偏向于一种形式，只要是伪造用户...&hellip;</p>
-      <div class="post-list__meta"><time datetime="2015-11-29 16:48:52 +0800" class="post-list__meta--date date">2015-11-29</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2015/11/security/>继续阅读</a></div>
-      <hr class="post-list__divider" />
-    </li>
-    
   </ol>
 
   <hr class="post-list__divider " />
@@ -211,7 +211,7 @@
     
         <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/#blog">&larr; 最近</a>
     
-    <span class="pagination__page-number">2 / 3</span>
+    <span class="pagination__page-number">2 / 4</span>
     
         <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/3/#blog">更早 &rarr;</a>
     
@@ -223,7 +223,7 @@
             <section class="footer">
     <footer>
     	<span class="footer__copyright">本站点采用<a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享 署名-非商业性使用-相同方式共享 4.0 国际 许可协议</a></span>
-        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-21 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
+        <span class="footer__copyright">由 <a href="https://jekyllrb.com">Jekyll</a> 于 2017-06-22 生成，感谢 <a href="https://www.digitalocean.com/?refcode=30ed2d146762">Digital Ocean</a> 为本站提供稳定的 VPS 服务</span>
         <span class="footer__copyright">本站采用 <a href="https://github.com/onevcat/vno-jekyll">Vno - Jekyll</a> 作为主题，您可以在 GitHub 找到<a href="https://github.com/onevcat/OneV-s-Den">本站源码</a> - &copy; 2017</span>
     </footer>
 </section>
