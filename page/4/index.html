@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>inheritance in prototype</title>
-  <meta name="description" content="### 拷贝继承">
+  <title>fanyer</title>
+  <meta name="description" content="">
   <meta name="author" content="Wei Wang">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="inheritance in prototype">
-  <meta name="twitter:description" content="### 拷贝继承">
+  <meta name="twitter:title" content="fanyer">
+  <meta name="twitter:description" content="">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="inheritance in prototype">
-  <meta property="og:description" content="### 拷贝继承">
+  <meta property="og:title" content="fanyer">
+  <meta property="og:description" content="">
   
   <link rel="icon" type="image/png" href="/assets/images/favicon.png" />
   <link href="/assets/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2014/11/inherit/">
+  <link rel="canonical" href="http://localhost:4000/page/4/">
   <link rel="alternate" type="application/rss+xml" title="fanyer" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -39,7 +39,7 @@
         <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
     </span>
     
-    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/assets/images/background-cover.jpg')">
+    <header class="panel-cover " style="background-image: url('/assets/images/background-cover.jpg')">
   <div class="panel-main">
 
     <div class="panel-main__inner panel-inverted">
@@ -129,109 +129,31 @@
 
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
-            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
-  <header class="post-header">
-    <div class="post-meta">
-      <time datetime="2014-11-02 13:48:52 +0800" itemprop="datePublished" class="post-meta__date date">2014-11-02</time> &#8226; <span class="post-meta__tags tags"></span>
-    </div>
-    <h1 class="post-title">inheritance in prototype</h1>
-  </header>
+            <div class="main-post-list hidden">
 
-  <section class="post">
-    <p>### 拷贝继承</p>
+  <ol class="post-list">
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2014/11/inherit/" title="访问 inheritance in prototype">inheritance in prototype</a></h2>
+      <p class="excerpt">### 拷贝继承### 类式继承(用new的继承)  function Aaa() {		//父类    this.name='小明';  }  Aaa..prototype.showName = function(first_argument) {    alert(this.name);  };  function Bbb() {		//子类    Aaa.call(this);		//继承父类构造函数里的属性  }  Bbb.prototype = new Aaa();	//实现继承...&hellip;</p>
+      <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/inherit/>继续阅读</a></div>
+      <hr class="post-list__divider" />
+    </li>
+    
+  </ol>
 
-<p>### 类式继承(用new的继承)</p>
+  <hr class="post-list__divider " />
 
-<div class="highlighter-rouge"><pre class="highlight"><code>  function Aaa() {		//父类
-    this.name='小明';
-  }
-
-  Aaa..prototype.showName = function(first_argument) {
-    alert(this.name);
-  };
-
-  function Bbb() {		//子类
-    Aaa.call(this);		//继承父类构造函数里的属性
-  }
-
-  Bbb.prototype = new Aaa();	//实现继承Core
-
-  //这里继承把属性也继承了，所以这种继承只适合单例模式
-  //为了解决这个问题，需要一个中间项
+<nav class="pagination" role="navigation">
+    
+        <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/page/3/#blog">&larr; 最近</a>
+    
+    <span class="pagination__page-number">4 / 4</span>
+    
+</nav>
 
 
-  //最终的类式继承
-  var f = function () {};			//方法继承
-  f.prototype = Aaa.prototype;
-
-  Bbb.prototype=new f();
-  Bbb.prototype.constructer=Bbb;	//修改this指向
-
-
-</code></pre>
 </div>
-
-<p>### 原型继承(不需要用new)</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>  var	a={name:'小明'}；
-
-  var b= clone(a);
-
-  alert(b.name);
-
-  function clone(obj) {
-    var F=function () {};
-    F.prototype=obj;
-
-    return new F();
-  }
-</code></pre>
-</div>
-
-  </section>
-</article>
-
-<section class="read-more">
-   
-   
-   <div class="read-more-item">
-       <span class="read-more-item-dim">最近的文章</span>
-       <h2 class="post-list__post-title post-title"><a href="/2014/11/js-Array-unique/" title="link to array unique">array unique</a></h2>
-       <p class="excerpt">数组去重的算法有很多，主要分类三类：      直接去重：时间复杂度 O(n²)　　这个方法没啥好介绍的，就是遍历到元素时候再遍历检测是否是重复，由于有两层嵌套的遍历，所以它的性能不高，不过它对数据本身的影响是最小的。        排序去重 ：时间复杂度 O(nlogn)　　先对数组做一次排序，然后遍历数组时相同元素都在邻近的位置，一次遍历就可以搞定。但是需要考虑一个问题，对象是可能无法比较大小的。这个算法那也许在C++之类的语言中可以很容易使用，但由于JavaScript无法直接取到对...&hellip;</p>
-       <div class="post-list__meta"><time datetime="2014-11-02 13:48:52 +0800" class="post-list__meta--date date">2014-11-02</time> &#8226; <span class="post-list__meta--tags tags"></span><a class="btn-border-small" href=/2014/11/js-Array-unique/>继续阅读</a></div>
-   </div>
-   
-   
-   
-</section>
-
-<section class="post-comments">
-  
-    <div id="disqus_thread"></div>
-    <script>
-    
-    var disqus_config = function () {
-        this.page.url = "http://localhost:4000/2014/11/inherit/";
-        this.page.identifier = "/2014/11/inherit/";
-    };
-
-    var disqus_shortname = 'fanyer';
-    
-    (function() { // DON'T EDIT BELOW THIS LINE
-        var d = document, s = d.createElement('script');
-        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
-    <noscript>要查看<a href="http://disqus.com/?ref_noscript"> Disqus </a>评论，请启用 JavaScript</noscript>
-    
-  
-  
-  
-  
-</section>
-
 
             <section class="footer">
     <footer>
