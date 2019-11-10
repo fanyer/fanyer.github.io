@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>MIDI.js - Sequencing in Javascript.</title>
+	<!-- midi.js css -->
+	<link href="./css/MIDIPlayer.css" rel="stylesheet" type="text/css" />
+	<!-- shim -->
+	<script src="../inc/shim/Base64.js" type="text/javascript"></script>
+	<script src="../inc/shim/Base64binary.js" type="text/javascript"></script>
+	<script src="../inc/shim/WebAudioAPI.js" type="text/javascript"></script>
+	<script src="../inc/shim/WebMIDIAPI.js" type="text/javascript"></script>
+	<!-- jasmid package -->
+	<script src="../inc/jasmid/stream.js"></script>
+	<script src="../inc/jasmid/midifile.js"></script>
+	<script src="../inc/jasmid/replayer.js"></script>
+	
+	<script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+	<!-- midi.js package -->
+	<script src="../js/midi/audioDetect.js" type="text/javascript"></script>
+	<script src="../js/midi/gm.js" type="text/javascript"></script>
+	<script src="../js/midi/loader.js" type="text/javascript"></script>
+	<script src="../js/midi/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="../js/midi/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="../js/midi/plugin.webmidi.js" type="text/javascript"></script>
+	<script src="../js/midi/player.js" type="text/javascript"></script>
+	<script src="../js/midi/synesthesia.js" type="text/javascript"></script>
+	<!-- utils -->
+	<script src="../js/util/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="../js/util/dom_request_script.js" type="text/javascript"></script>
+	<!-- includes -->
+	<script src="./inc/timer.js" type="text/javascript"></script>
+	<script src="./inc/colorspace.js" type="text/javascript"></script>
+	<script src="./inc/event.js" type="text/javascript"></script>
+</head>
+<body>
+
+	<img src="./images/shiverMeTimbers.gif" style="position: fixed; top: 30px; left: 1300px; z-index: 4">
+	<img src="./images/tuna.png" onmousedown="event.preventDefault()" width="625" style="opacity: 0.95; position: fixed; top: 0; left: 765px; z-index: 2; padding: 10px; float: left; margin-right: 20px; ">
+	<h1>MIDI For Fanyer.</h1>
+	<div style="position: fixed; top: 0; left: 0; z-index: 4; overflow: hidden;" id="colors"></div>
+	<div style="text-align: center; position: absolute; top: -70px; left: -40px; opacity: 0.9" id="colors"></div>
+	<div style="margin-bottom: 50px; border: 1px solid #000; background: rgba(255,255,255,0.5); border-radius: 11px; float: left; width: 800px; padding-bottom: 15px; position: relative; z-index: 2;">
+		<div class="player" style="height: 42px; box-shadow: 0 -1px #000; margin-bottom: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+			<div style="margin: 0 auto; width: 160px; float: right;">
+				<input type="image" src="./images/pause.png" align="absmiddle" value="pause" onclick="pausePlayStop()" id="pausePlayStop">
+				<input type="image" src="./images/stop.png" align="absmiddle" value="stop" onclick="pausePlayStop(true)">
+				<input type="image" src="./images/backward.png" align="absmiddle" value="stop" onclick="player.getNextSong(-1);">
+				<input type="image" src="./images/forward.png" align="absmiddle" value="stop" onclick="player.getNextSong(+1);">
+			</div>
+			<div class="time-controls" style="float: left; margin: 0; position: relative; top: 5px;">
+				<span id="time1" class="time">0:00</span>
+				<span id="capsule">
+					<span id="cursor"></span>
+				</span>
+				<span id="time2" class="time" style="text-align: left;">-0:00</span>
+			</div>
+		</div>
+		<div  style="height:100px;background: rgba(255,255,0,0.5); position: relative;color: #000; z-index: -1;padding: 5px 11px 5px;">
+			<span id="title">
+				Loading API...
+			</span>
+			<div class="file-con">
+				<input type="file" class="upload-file" name="upload" id="personfacefile" onchange="personfaceFile()">
+
+			</div>
+		</div>
+		<style>
+		.file-con{
+			border-top: 2px solid #333;
+			margin-top: 8px;
+
+		}
+		.upload-file{
+			position: fixed;
+			z-index: 10000;
+			height: 50px;
+			width: 200px;
+			/* background: white; */
+		}
+		</style>
+		<script>
+			
+		var personfilefaceString = "";
+		/**
+		 * 获取公民文件的正面的base64
+		 */
+		function personfaceFile(){
+			var files = $('#personfacefile').prop('files');//获取到文件列表
+			if (files.length == 0) {
+				alert('请选择文件');
+				return;
+			} else {
+				var reader = new FileReader();//新建一个FileReader
+				reader.onload = function (evt) { //读取完文件之后会回来这里
+					personfilefaceString = evt.target.result;
+					//截取其中的Base64编码
+					personfilefaceString = personfilefaceString.substring(personfilefaceString.indexOf(",")+1);
+	
+					// personfilefaceString = 
+					console.log(personfilefaceString);
+	
+					song =['data:audio/mid;base64,'+personfilefaceString]
+					player.loadFile(song[0], player.start);
+	
+				}
+				reader.readAsDataURL(files[0]);//读取文件
+			}
+		}
+	
+		</script>
+			
+	</div>
+
+<script type="text/javascript">
+	if (typeof (console) === "undefined") var console = {
+		log: function() {}
+	};
+	// Toggle between Pause and Play modes.
+	var pausePlayStop = function(stop) {
+		var d = document.getElementById("pausePlayStop");
+		if (stop) {
+			MIDI.Player.stop();
+			d.src = "./images/play.png";
+		} else if (MIDI.Player.playing) {
+			d.src = "./images/play.png";
+			MIDI.Player.pause(true);
+		} else {
+			d.src = "./images/pause.png";
+			MIDI.Player.resume();
+		}
+	};
+	eventjs.add(window, "load", function(event) {
+		var link = document.createElement("link");
+		link.href = "//fonts.googleapis.com/css?family=Oswald";
+		link.ref = "stylesheet";
+		link.type = "text/css";
+		document.body.appendChild(link);
+		var link = document.createElement("link");
+		link.href = "//fonts.googleapis.com/css?family=Andada";
+		link.ref = "stylesheet";
+		link.type = "text/css";
+		document.body.appendChild(link);
+		
+		/// load up the piano keys
+		var colors = document.getElementById("colors");
+		var colorElements = [];
+		for (var n = 0; n < 88; n++) {
+			var d = document.createElement("div");
+			d.innerHTML = MIDI.noteToKey[n + 21];
+			colorElements.push(d);
+			colors.appendChild(d);
+		}
+		///
+		MIDI.loader = new sketch.ui.Timer;
+		MIDI.loadPlugin({
+			soundfontUrl: "./soundfont/",
+			onprogress: function(state, progress) {
+				MIDI.loader.setValue(progress * 100);
+			},
+			onsuccess: function() {
+				/// this is the language we are running in
+				var title = document.getElementById("title");
+				title.innerHTML = "Sound being generated with " + MIDI.api + " " + JSON.stringify(MIDI.supports);
+
+				/// this sets up the MIDI.Player and gets things going...
+				player = MIDI.Player;
+				player.timeWarp = 1; // speed the song is played back
+				player.loadFile(song[songid++ % song.length], player.start);
+
+				/// control the piano keys colors
+				var colorMap = MIDI.Synesthesia.map();
+				player.addListener(function(data) {
+					var pianoKey = data.note - 21;
+					var d = colorElements[pianoKey];
+					if (d) {
+						if (data.message === 144) {
+							var map = colorMap[data.note - 27];
+							if (map) d.style.background = map.hex;
+							d.style.color = "#fff";
+						} else {
+							d.style.background = "";
+							d.style.color = "";
+						}
+					}
+				});
+				///
+				ColorSphereBackground();
+				MIDIPlayerPercentage(player);
+			}
+		});
+	});
+
+	var MIDIPlayerPercentage = function(player) {
+		// update the timestamp
+		var time1 = document.getElementById("time1");
+		var time2 = document.getElementById("time2");
+		var capsule = document.getElementById("capsule");
+		var timeCursor = document.getElementById("cursor");
+		//
+		eventjs.add(capsule, "drag", function(event, self) {
+			eventjs.cancel(event);
+			player.currentTime = (self.x) / 420 * player.endTime;
+			if (player.currentTime < 0) player.currentTime = 0;
+			if (player.currentTime > player.endTime) player.currentTime = player.endTime;
+			if (self.state === "down") {
+				player.pause(true);
+			} else if (self.state === "up") {
+				player.resume();
+			}
+		});
+		//
+		function timeFormatting(n) {
+			var minutes = n / 60 >> 0;
+			var seconds = String(n - (minutes * 60) >> 0);
+			if (seconds.length == 1) seconds = "0" + seconds;
+			return minutes + ":" + seconds;
+		};
+		player.getNextSong = function(n) {
+			var id = Math.abs((songid += n) % song.length);
+			player.loadFile(song[id], player.start); // load MIDI
+		};
+		player.setAnimation(function(data, element) {
+			var percent = data.now / data.end;
+			var now = data.now >> 0; // where we are now
+			var end = data.end >> 0; // end of song
+			if (now === end) { // go to next song
+				var id = ++songid % song.length;
+				player.loadFile(song[id], player.start); // load MIDI
+			}
+			// display the information to the user
+			timeCursor.style.width = (percent * 100) + "%";
+			time1.innerHTML = timeFormatting(now);
+			time2.innerHTML = "-" + timeFormatting(end - now);
+		});
+	};
+	
+	var ColorSphereBackground = function() {
+		var d = document;
+		var canvas = document.createElement("canvas");
+		var ctx = canvas.getContext("2d");
+		canvas.style.cssText = "position: fixed; left: 0; top: 0; opacity: 1";
+		canvas.style.width = window.innerWidth + "px";
+		canvas.style.height = window.innerHeight + "px";
+		document.body.appendChild(canvas);
+		//
+		eventjs.add(window, "resize", function() {
+			canvas.style.width = window.innerWidth + "px";
+			canvas.style.height = window.innerHeight + "px";
+			ctx.drawImage(theSphere = sphere(percent), 0, 0)
+		});
+		eventjs.add(d, "scroll", function(e) {
+			var percent = 1 - document.body.scrollTop / document.body.scrollHeight;
+			ctx.drawImage(theSphere = sphere(percent), 0, 0);
+			onMouseMove();
+		});
+		var theSphere;
+		var px = window.innerWidth / 2;
+		var py = window.innerHeight / 2;
+		var onMouseMove = function(event) {
+			ctx.drawImage(theSphere, 0, 0);
+			if (event) {
+				var coords = eventjs.proxy.getCoord(event);
+				coords.x -= document.body.scrollLeft;
+				coords.y -= document.body.scrollTop;
+				px = coords.x;
+				py = coords.y;
+			} else { // 
+				var coords = {
+					x: px,
+					y: py
+				};
+			}
+			//
+			var x = (coords.x / window.innerWidth) * 255 - 127; // grab mouse pixel coords, center at midpoint
+			var y = (coords.y / window.innerHeight) * 255 - 127;
+			var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height); // get image data
+			var data = imageData.data;
+			for (var n = 0, length = data.length; n < length; n += 4) {
+				data[n] = data[n] + x - y; // red (control left)
+				data[n + 1] = data[n + 1] - x - y; // green (control right)
+				data[n + 2] = data[n + 2] + y + y; // blue (control down)
+			}
+			ctx.putImageData(imageData, 0, 0);
+		};
+		eventjs.add(d, "mousemove", onMouseMove);
+		///
+		function sphere(top) { // create Sphere image, and apply to <canvas>
+			var canvas1 = document.createElement("canvas");
+			var ctx = canvas1.getContext("2d");
+			var w = 75;
+			var left = -20;
+			var top = top * -50;
+			canvas.width = canvas1.width = w * window.innerWidth / window.innerHeight;
+			canvas.height = canvas1.height = w;
+			ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+			n = 360;
+			while (n--) { // go through hues
+				var x = left + w;
+				var y = top + w;
+				var g = ctx.createLinearGradient(x, top, x, y);
+				g.addColorStop(0, "#000");
+				g.addColorStop(.5, "hsl(" + ((n + 60) % 360) + ",100%,50%)");
+				g.addColorStop(1, "#FFF");
+				ctx.beginPath(); // draw triangle
+				ctx.moveTo(x, top);
+				ctx.lineTo(x, y);
+				ctx.lineTo(x + 2, y);
+				ctx.lineTo(x + 5, top);
+				ctx.fillStyle = g; // apply gradient
+				ctx.fill();
+				ctx.translate(x, y); // rotate + translate into position
+				ctx.rotate((1 / 360) * Math.PI * 2);
+				ctx.translate(-x, -y);
+			}
+			return canvas1;
+		};
+		//
+		var percent = 1 - document.body.scrollTop / document.body.scrollHeight;
+		ctx.drawImage(theSphere = sphere(percent), 0, 0)
+	};
+	
+	// Begin loading indication.
+	var player;
+	// MIDI files from Disklavier World
+	var songid = 0;
+	
+
+	var song = [
+		// Test 1
+		`data:audio/mid;base64,
+		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
+		`
+	]
+
+</script>
+</body>
+</html>
