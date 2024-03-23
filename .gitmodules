@@ -1,0 +1,3 @@
+[submodule "vno-jekyll"]
+	path = vno-jekyll
+	url = https://github.com/onevcat/vno-jekyll.git
