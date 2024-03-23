@@ -1,11 +1,12 @@
 # Basic
-title: Vno Jekyll
-subtitle: A blog-orientation theme for Jekyll
-welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
-description: Vno Jekyll is a port of my Ghost theme vno.
-creator: <a href="http://onev.cat">@onevcat</a>
+title: Yeer Fan
+subtitle:  Code, Design, and Things in Between 
+welcome_message: <a href="" target="_blank">Just Help Yourself</a>
+# welcome_message: <a href="https://github.com/onevcat/vno-jekyll" target="_blank">Download the theme</a>
+# description: Vno Jekyll is a port of my Ghost theme vno.
+# creator: <a href="http://onev.cat">@onevcat</a>
 
-url: "http://vno.onevcat.com"
+url: "http://blog.capcat.top/"
 
 permalink: /:year/:month/:title/
 
@@ -22,7 +23,7 @@ blog_button:
 
 # Navigation buttons in the front page.
 nav:
-    - {title: Projects, description: My Projects, url: 'http://project.onevcat.com'}
+    # - {title: Projects, description: My Projects, url: 'http://project.onevcat.com'}
     # - {title: Another Button, description: A button, url: 'http://example.com'}
 
 # Pagination
@@ -37,11 +38,12 @@ comment:
     
 # Social
 social:
-    weibo: onevcat
-    github: onevcat
-    twitter: onevcat
-    gplus: 107108267983477358170
-    mail: onev@onevcat.com
+    weibo: sysu_fanyer
+    github: fanyer
+    twitter: fanyer
+    mail: iofanyer@live.com
+    # gplus: 107108267983477358170
+    # mail: fanyer@capcat.top
 
 # Google Analytics
 ga:
