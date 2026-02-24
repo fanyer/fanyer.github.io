@@ -6,6 +6,9 @@ welcome_message: <a href="" target="_blank">Just Help Yourself</a>
 # description: Vno Jekyll is a port of my Ghost theme vno.
 # creator: <a href="http://onev.cat">@onevcat</a>
 
+repository: fanyer/fanyer.github.io
+
+
 url: "http://blog.capcat.top/"
 
 permalink: /:year/:month/:title/
